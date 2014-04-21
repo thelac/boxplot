@@ -1,6 +1,8 @@
 var url = 'https://inboxr.firebaseio.com/';
 var fb = new Firebase(url);
 
+var table = document.createElement('table');
+document.body.appendChild(table);
 
 fb.on('value', function(data) {
   // Gets JavaScript object of the form
@@ -8,7 +10,8 @@ fb.on('value', function(data) {
   // data['Daniel'][0]
   data = data.val();
 
-  var table = document.createElement('table')
+  table.innerHTML = '';
+
   var rowCount = 0;
   var header = table.insertRow(rowCount);
   var personHeader = header.insertCell(0);
@@ -32,9 +35,6 @@ fb.on('value', function(data) {
       for (key in dat)
         count.innerHTML = dat[key].count;
     })
-
-
-    document.body.appendChild(table);
 
   }
 });
