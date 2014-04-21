@@ -22,3 +22,4 @@ To run, type 'gulp' in console in inboxr directory.
 
 ## To Do
 - Add gulp git commands (e.g., stage and publish)
+- Sort table
