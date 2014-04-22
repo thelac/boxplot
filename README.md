@@ -11,6 +11,8 @@ brew install git
 brew install hub
 brew install node
 
+hub clone thelac/inboxr
+
 # Install inboxr-specific stuff
 npm install -g gulp
 npm install
@@ -23,3 +25,4 @@ To run, type 'gulp' in console in inboxr directory.
 ## To Do
 - Add gulp git commands (e.g., stage and publish)
 - Sort table
+- Add line chart: d3 or http://www.humblesoftware.com/finance/index
