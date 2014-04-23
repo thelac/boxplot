@@ -8,6 +8,10 @@ fb.on('value', function(data) {
   // Gets JavaScript object of the form
   // data[NAME] = Array of timestamped inbox count
   // data['Daniel'][0]
+
+  // This is shit because it grabs all the data,
+  // when we don't want all of it; this is why
+  // loading times are slow
   data = data.val();
 
   table.innerHTML = '';
@@ -20,9 +24,7 @@ fb.on('value', function(data) {
   countHeader.innerHTML = 'Count';
 
   for (name in data) {
-    // for (time in data[name]) {
-    //   console.log('name: ' + name + ' time: ' + time + ' count: ' + data[name][time].count)
-    // }
+    // This is also shit beacuse it's not ordered
     rowCount++;
     var row = table.insertRow(rowCount);
     var person = row.insertCell(0);
@@ -31,6 +33,7 @@ fb.on('value', function(data) {
 
     var c = (new Firebase(url + name)).limit(1);
     c.on('value', function(dat) {
+      // I mean, seriously?
       dat = dat.val();
       for (key in dat)
         count.innerHTML = dat[key].count;
