@@ -12,6 +12,7 @@ brew install hub
 brew install node
 
 hub clone thelac/inboxr
+cd inboxr
 
 # Install inboxr-specific stuff
 npm install -g gulp
