@@ -1,0 +1,23 @@
+{
+  "author": "Daniel Suo",
+  "name": "floored-labs",
+  "version": "0.0.1",
+  "homepage": "labs.floored.com",
+  "licenses": {
+    "type": "MIT"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:floored/labs.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "connect-livereload": "~0.4.0",
+    "tiny-lr": "0.0.5",
+    "gulp-util": "~2.2.14",
+    "gulp": "~3.6.1",
+    "express": "~4.0.0",
+    "gulp-livereload": "~1.1.1",
+    "gulp-git": "~0.3.6"
+  }
+}
