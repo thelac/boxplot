@@ -1,8 +1,8 @@
 {
-  "author": "Daniel Suo",
-  "name": "floored-labs",
+  "author": "The Leather Apron Club",
+  "name": "Inboxr",
   "version": "0.0.1",
-  "homepage": "labs.floored.com",
+  "homepage": "http://thelac.github.io/inboxr",
   "licenses": {
     "type": "MIT"
   },
