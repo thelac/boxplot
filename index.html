@@ -1,12 +1,308 @@
 <html>
-<head>
-  <title>Email tracker</title>
-  <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.11/firebase.js'></script>
-  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.5/d3.js'></script>
-  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/c3/0.1.29/c3.js'></script>
-  <style src='https://cdnjs.cloudflare.com/ajax/libs/c3/0.1.29/c3.css'></style>
-</head>
-<body>
-  <script src='main.js'></script>
-</body>
+	<head>
+		<style>
+
+		body {
+		  font: 10px sans-serif;
+		}
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+
+		path {
+		    stroke: #000;
+		    stroke-width: 2;
+		    fill: none;
+		}
+		
+		#title {
+			font-size: 24pt;
+		}
+
+
+		#container{
+			width:100%;
+		}
+
+		.line {
+		  fill: none;
+		  stroke: steelblue;
+		  stroke-width: 1.5px;
+		}
+	
+		</style>
+
+		<title>
+			Inboxr
+		</title>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8">
+		</script>
+
+
+<!-- 
+TODO
+add everyone else
+responsive sizing
+add to homescreen!
+hardcode y axis?
+deal with longer inputs/dynamic scrolling?
+Remove LiveReload script
+refresh
+ -->
+
+		<script>
+			function convert_b_c(name){
+				$.getJSON("https://inboxr.firebaseio.com/" + name + ".json", function (data){
+					var items = [];
+					$.each(data, function( d ) {
+						items.push({
+							"time": data[d].time,
+							"count": data[d].count
+						});
+					});
+
+					$.ajax({
+							url: "https://inboxr.firebaseio.com/" + name + ".json",
+							type: "DELETE"
+						}).done(function (d) {
+							$.each(items, function(d){
+								$.ajax({
+									url: "https://inboxr.firebaseio.com/" + name + ".json",
+									type: "post",
+									data: JSON.stringify({
+										"time": items[d].time,
+										"count": items[d].count,
+										"id": name
+									}),
+									dataType:"json",
+									contentType:"application/json"
+								}).done;
+							});
+						});
+					
+				});
+			}
+
+			function convert_a_c(name){
+				$.getJSON("https://inboxr.firebaseio.com/" + name + ".json", function (data){
+					var items = [];
+					$.each(data, function(k,v) {
+
+						var year = k.substring(0,4);
+							var month = k.substring(4,6)-1;
+						var day = k.substring(6,8);
+						var hour = k.substring(9,11);
+						var minute = k.substring(11,13);
+
+						var time = new Date(year, month, day, hour, minute);
+
+						items.push({
+							"time": time,
+							"count": v["count"]
+						});
+					});	
+					
+					$.ajax({
+							url: "https://inboxr.firebaseio.com/" + name + ".json",
+							type: "DELETE"
+						}).done(function (d) {
+							$.each(items, function(d){
+								$.ajax({
+									url: "https://inboxr.firebaseio.com/" + name + ".json",
+									type: "post",
+									data: JSON.stringify({
+										"time": items[d].time,
+										"count": items[d].count,
+										"id": name
+									}),
+									dataType:"json",
+									contentType:"application/json"
+								}).done;
+							});
+						});
+				});
+			}
+
+			function filt(arr, name) {
+				var filtered = arr.filter(function (d){
+					return d.id == name;
+				});
+			
+				filtered.sort(function(a,b){
+					return a.time - b.time;
+				})
+
+				return filtered;
+			}
+
+			function del(name) {
+				$.ajax({
+							url: "https://inboxr.firebaseio.com/" + name + ".json",
+							type: "DELETE"
+						})
+			}
+
+		</script>
+
+
+		<script>
+			// live reload script
+			document.write('<script src="http://' + (location.host || 'localhost')
+				.split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+			</script>
+
+	</head>
+	<!-- <body onload="sizeChange()"> -->
+	<body>
+		<script>
+			// making stuff responsive
+
+			// d3.select(window)
+     		//	.on("resize", sizeChange);
+
+     		// console.log($("#container").width()/900)
+			// function sizeChange() {
+			// 	console.log($("#container").width()/900)
+			//     d3.select("g").attr("transform", "scale(" + $("#container").width()/900 + ")");
+			//     $("svg").height($("#container").width()*0.618);
+			// }
+
+			var colors = ["steelblue", "black", "red", "gold", "olivedrab", "powderblue", "orange", "orchid", "saddlebrown"]
+			var w = 960
+			var h = 500
+			var margin = {top: 20, right: 20, bottom: 30, left: 30},
+			    width = w - margin.left - margin.right,
+			    height = h - margin.top - margin.bottom;
+
+			var x = d3.time.scale()
+				.range([0, width]);
+
+			var y = d3.scale.linear()
+				.range([height, 0]);
+
+			var xAxis = d3.svg.axis()
+				.scale(x)
+				.orient("bottom");
+			
+
+			var yAxis = d3.svg.axis()
+			    .scale(y)
+				.tickFormat(d3.format("d"))
+			    .orient("left"); 
+
+			var line = d3.svg.line()
+				.interpolate("basis")
+				.x(function(d) { return x(d.time); })
+				.y(function(d) { return y(d.count); })
+
+			var svg = d3.select("body").append("svg")
+			    .attr("width", width + margin.left + margin.right)
+			    .attr("height", height + margin.top + margin.bottom)
+			  .append("g")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			d3.json("https://inboxr.firebaseio.com/inboxr.json", function (data){
+
+					var dataset = []
+
+					for (var d in data){
+						dataset.push({
+							"time": new Date(data[d].time),
+							"count": data[d].count,
+							"id": data[d].id
+						})
+					}
+
+					x.domain(d3.extent(dataset, function(d) { return d.time; }));
+					y.domain(d3.extent(dataset, function(d) { return d.count; }));
+
+					svg.append("g")
+					    .attr("class", "x axis")
+					    .attr("transform", "translate(0," + height + ")")
+					    .call(xAxis);
+
+					svg.append("g")
+					    .attr("class", "y axis")
+					    .call(yAxis)
+					  .append("text")
+					    .attr("transform", "rotate(-90)")
+					    .attr("y", 6)
+					    .attr("dy", ".71em")
+					    .style("text-anchor", "end")
+					    .text("Count");
+
+					var names_dict = {};
+					for (var i in dataset ) {
+						names_dict[dataset[i].id] = 0;
+					}
+
+					var ix = 0;
+
+					for (var i in names_dict){
+						names_dict[i] = {
+							"color": colors[ix]
+						}
+						ix++;
+					}
+					var y_offset = 0; 
+
+					names_arr = []
+					for (var i in names_dict) {
+						var name_slice = filt(dataset, i);
+
+						names_dict[i].last = name_slice.slice(-1)[0].count;
+
+						svg.append("path")
+						      .datum(name_slice)
+						      .attr("class", "line")
+						      .attr("style", "stroke: " + names_dict[i].color)
+						      .attr("d", line);
+
+						names_arr.push({
+							"name": i,
+							"last": names_dict[i].last
+						});
+					}
+
+					names_arr.sort(function(a,b){
+						return a.last-b.last;
+					});
+
+					for (var j in names_arr) {
+						i = names_arr[j].name
+
+						svg.append("svg:rect")
+						    .attr("x", 20)
+						    .attr("y", 40 + y_offset)
+						    .attr("style", "stroke: " + names_dict[i].color)
+						    .attr("height", "1")
+						    .attr("width", 32);
+
+
+						svg.append("svg:text")
+						    .attr("x", 55)
+						    .attr("y", 45 + y_offset)
+						    .text(i);
+
+
+					    svg.append("svg:text")
+					        .attr("x", 120)
+					        .attr("y", 45 + y_offset)
+					        .text(names_dict[i].last);
+
+						y_offset = y_offset + 18;
+					}
+
+					svg.append("svg:text")
+					    .attr("x", w/2-50)
+					    .attr("y", 20)
+					    .attr("id", "title")
+					    .text("Inboxr");
+				});
+		</script>
+	</body>
 </html>
