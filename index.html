@@ -28,6 +28,7 @@
 			width:100%;
 		}
 
+
 		.line {
 		  fill: none;
 		  stroke: steelblue;
@@ -146,6 +147,12 @@ refresh
 						})
 			}
 
+			function on_load(){
+				var button = document.getElementById("exclude");
+				button.onclick = function () {
+					rescale();
+				}
+			}
 		</script>
 
 
@@ -156,8 +163,10 @@ refresh
 			</script>
 
 	</head>
-	<!-- <body onload="sizeChange()"> -->
+	<body onload="on_load()">
 	<body>
+
+		
 		<script>
 			// making stuff responsive
 
@@ -170,8 +179,7 @@ refresh
 			//     d3.select("g").attr("transform", "scale(" + $("#container").width()/900 + ")");
 			//     $("svg").height($("#container").width()*0.618);
 			// }
-
-			var colors = ["steelblue", "black", "red", "gold", "olivedrab", "powderblue", "orange", "orchid", "saddlebrown"]
+			var colors = ["steelblue", "black", "red", "gold", "olivedrab", "powderblue", "orange", "orchid", "saddlebrown", "greenyellow", "turquoise"]
 			var w = 960
 			var h = 500
 			var margin = {top: 20, right: 20, bottom: 30, left: 30},
@@ -218,7 +226,8 @@ refresh
 					}
 
 					x.domain(d3.extent(dataset, function(d) { return d.time; }));
-					y.domain(d3.extent(dataset, function(d) { return d.count; }));
+					default_extent = d3.extent(dataset, function(d) { return d.count; });
+					y.domain(default_extent);
 
 					svg.append("g")
 					    .attr("class", "x axis")
@@ -303,6 +312,32 @@ refresh
 					    .attr("id", "title")
 					    .text("Inboxr");
 				});
+
+			function rescale(){
+				var button = document.getElementById("exclude");
+				console.log(button.innerHTML)
+				if (button.innerHTML == "Exclude Kane"){
+					y.domain([0,60]);
+					button.innerHTML = "Include Kane";
+				}
+				else if (button.innerHTML == "Include Kane"){
+					y.domain(window.default_extent);
+					button.innerHTML = "Exclude Kane";
+				}
+
+				svg.select("g.y.axis")
+					.transition().duration(750)
+					.call(yAxis);
+
+				svg.selectAll("path.line")
+					.transition().duration(750)
+					.attr("d", line);
+			}
 		</script>
+
+		
+		<button id="exclude">Exclude Kane</button>
+		
+		
 	</body>
 </html>
