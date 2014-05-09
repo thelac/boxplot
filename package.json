@@ -1,23 +1,23 @@
 {
-  "author": "The Leather Apron Club",
-  "name": "Inboxr",
+  "name": "application-name",
   "version": "0.0.1",
-  "homepage": "http://thelac.github.io/inboxr",
-  "licenses": {
-    "type": "MIT"
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:floored/labs.git"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "connect-livereload": "~0.4.0",
-    "tiny-lr": "0.0.5",
-    "gulp-util": "~2.2.14",
-    "gulp": "~3.6.1",
+  "dependencies": {
     "express": "~4.0.0",
-    "gulp-livereload": "~1.1.1",
-    "gulp-git": "~0.3.6"
+    "static-favicon": "~1.0.0",
+    "morgan": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "body-parser": "~1.0.0",
+    "jade": "~1.3.0",
+    "dustjs-linkedin": "~2.3.5"
+  },
+  "devDependencies": {
+    "gulp-dust": "~0.2.0",
+    "debug": "~0.7.4",
+    "gulp-watch": "~0.6.4",
+    "gulp-stylus": "~1.0.0"
   }
 }

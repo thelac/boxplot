@@ -1,35 +1,25 @@
-var gulp = require('gulp');
-var git = require('gulp-git');
-var lr = require('tiny-lr')();
+var gulp = require('gulp'),
+  git = require('gulp-git'),
+  dust = require('gulp-dust'),
+  watch = require('gulp-watch'),
+  livereload = require('gulp-livereload');
 
 var PORT = 8000;
-var ROOT = __dirname;
-var LIVE = 35729;
 
-function startExpress() {
-  var express = require('express');
-  var app = express();
-  app.use(require('connect-livereload')());
-  app.use(express.static(ROOT));
+function startApp() {
+  var app = require('./app');
   app.listen(PORT);
 }
 
-function startLiveReload() {
-  lr.listen(LIVE);
-}
-
-function reload(event) {
-  var fileName = require('path').relative(ROOT, event.path);
-
-  lr.changed({
-    body: {
-      files: [fileName]
-    }
-  });
-}
-
 gulp.task('default', function() {
-  startExpress();
-  startLiveReload();
-  gulp.watch('*', reload);
+  startApp();
+
+  gulp.src(['public/**/*', 'routes/*.js'])
+    .pipe(watch())
+    .pipe(livereload());
+
+  gulp.src('views/*.dust')
+    .pipe(watch())
+    .pipe(dust())
+    .pipe(gulp.dest('views'));
 });
