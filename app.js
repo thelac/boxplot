@@ -12,7 +12,11 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+
+var dust = require('dustjs-linkedin');
+var cons = require('consolidate');
+app.engine('dust', cons.dust);
+app.set('view engine', 'dust');
 
 app.use(favicon());
 app.use(logger('dev'));

@@ -1,0 +1,18 @@
+<html>
+<head>
+  <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.11/firebase.js'></script>
+  <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.0.0/dust-full.js'></script>
+  <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.4.1/firebase-simple-login.js'></script>
+</head>
+<body>
+  {title} Hello! World!
+  <script>
+    // TODO: SCRIPTS REALLY DON'T BELONG IN VIEWS
+    // Scripts should be executed to grab data, inject into template via
+    // placeholders, compile into HTML, and then send to client
+    var chatRef = new Firebase('https://inboxr.firebaseio.com');
+    var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {});
+    auth.login('google');
+  </script>
+</body>
+</html

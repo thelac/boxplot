@@ -21,5 +21,5 @@ gulp.task('default', function() {
   gulp.src('views/*.dust')
     .pipe(watch())
     .pipe(dust())
-    .pipe(gulp.dest('views'));
+    .pipe(gulp.dest('public/js/views'));
 });

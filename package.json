@@ -15,12 +15,17 @@
     "dustjs-linkedin": "~2.3.5"
   },
   "devDependencies": {
+    "bromote": "^0.2.0",
+    "browserify": "^3.46.1",
+    "browserify-shim": "^3.4.1",
+    "consolidate": "^0.10.0",
     "debug": "~0.7.4",
     "gulp": "^3.6.2",
     "gulp-dust": "~0.2.0",
     "gulp-git": "^0.4.2",
     "gulp-livereload": "^1.5.0",
     "gulp-stylus": "~1.0.0",
-    "gulp-watch": "~0.6.4"
+    "gulp-watch": "~0.6.4",
+    "watchify": "^0.9.0"
   }
 }

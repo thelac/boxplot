@@ -29,20 +29,28 @@ To run, type 'gulp' in console in inboxr directory.
 - [Dust.js](http://akdubya.github.io/dustjs/) and [LinkedIn](https://github.com/linkedin/dustjs/wiki/Dust-Tutorial)'s version
 - [Bootstrap](http://getbootstrap.com/getting-started/)
 
-## How stuff works and where stuff is
-- TODO: server, client, routes, views, utils, public; gulp vs node
+## TO DO
 
-## Style guide
+### User team
+- Gmail authentication: https://developers.google.com/gmail/oauth_overview
+- Get gmail data
+- Sign up, sign in, sign out
 
-## To Do
-- Add gulp git commands (e.g., stage and publish)
-- Move oauth out of google spreadsheet
-- Add foundation
-- Add backend
-- Create new group
-- Add to group
-- add browserify / watchify
+### Group team
+- Create / view / manage groups
+- Charts
+- Add user to group
 
-## Completed
-- Sort table
-- Add line chart: d3 or http://www.humblesoftware.com/finance/index
+### Backend team
+- Local, staging, production
+- Database set up
+- Deployment set up
+- Dev environment (browserify, gulp git)
+- Front-end infrastructure
+- Analytics
+- Error tracking / monitoring
+
+## Working habits
+- Small commits
+- Pull requests -> discussion
+- Any and all questions!

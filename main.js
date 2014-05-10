@@ -1,3 +1,4 @@
+// TODELETE
 var url = 'https://inboxr.firebaseio.com/';
 var fb = new Firebase(url);
 
