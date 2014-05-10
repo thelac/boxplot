@@ -51,6 +51,7 @@ To run, type 'gulp' in console in inboxr directory.
 - Error tracking / monitoring
 
 ## Working habits
+- Work on own branch -> local -> staging -> production
 - Small commits
-- Pull requests -> discussion
+- Pull requests from local to staging -> discussion
 - Any and all questions!
