@@ -15,7 +15,7 @@ hub clone thelac/inboxr
 cd inboxr
 
 # Install inboxr-specific stuff
-npm install -g gulp
+npm install gulp
 npm install
 ```
 
