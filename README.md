@@ -29,8 +29,8 @@ Install [this](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnpp
 ## Getting up to speed
 - [Express.js](http://expressjs.com/guide.html); Node in Action is the official node-express book
 - [Firebase](https://www.firebase.com/docs/)
-- [Dust.js](http://akdubya.github.io/dustjs/) and [LinkedIn](https://github.com/linkedin/dustjs/wiki/Dust-Tutorial)'s version
-- [Bootstrap](http://getbootstrap.com/getting-started/)
+- [Jade.js](http://jade-lang.com/reference)
+- [Bootstrap](http://www.sitepoint.com/twitter-bootstrap-tutorial-handling-complex-designs/)
 
 ## TO DO
 

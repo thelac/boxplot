@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
   git = require('gulp-git'),
-  dust = require('gulp-dust'),
   watch = require('gulp-watch'),
   stylus = require('gulp-stylus'),
   livereload = require('gulp-livereload'),
