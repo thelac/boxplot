@@ -2,24 +2,47 @@ var gulp = require('gulp'),
   git = require('gulp-git'),
   dust = require('gulp-dust'),
   watch = require('gulp-watch'),
-  livereload = require('gulp-livereload');
+  stylus = require('gulp-stylus'),
+  livereload = require('gulp-livereload'),
+  source = require('vinyl-source-stream'),
+  watchify = require('watchify');
 
 var PORT = 8000;
 
-function startApp() {
+gulp.task('serve', function() {
   var app = require('./app');
   app.listen(PORT);
-}
-
-gulp.task('default', function() {
-  startApp();
-
-  gulp.src(['public/**/*', 'routes/*.js'])
-    .pipe(watch())
-    .pipe(livereload());
-
-  gulp.src('views/*.dust')
-    .pipe(watch())
-    .pipe(dust())
-    .pipe(gulp.dest('public/js/views'));
 });
+
+gulp.task('watchify', function() {
+  return watchify({
+    entries: ['./client/js/main.js'],
+    extensions: ['.js']
+  })
+    .bundle({
+      debug: true
+    })
+    .pipe(source('main.js'))
+    .pipe(gulp.dest('./public/js'));
+});
+
+gulp.task('stylus', function() {
+  gulp.src(['./client/css/*.styl'])
+    .pipe(stylus())
+    .pipe(gulp.dest('./public/css'));
+});
+
+gulp.task('watch', function() {
+  var server = livereload();
+
+  var reload = function(file) {
+    server.changed(file.path);
+  };
+
+  gulp.watch('client/js/*.js', ['watchify'])
+    .on('change', reload);
+  gulp.watch('client/css/*.styl', ['stylus'])
+    .on('change', reload);
+});
+
+gulp.task('default', ['watch', 'serve']);

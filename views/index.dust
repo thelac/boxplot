@@ -3,6 +3,8 @@
   <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.11/firebase.js'></script>
   <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.0.0/dust-full.js'></script>
   <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.4.1/firebase-simple-login.js'></script>
+  <script type='text/javascript' src='/public/js/main.js'></script>
+  <link rel="stylesheet" type="text/css" href="/public/css/main.css">
 </head>
 <body>
   {title} Hello! World!
