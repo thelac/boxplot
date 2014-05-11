@@ -30,7 +30,7 @@ Install [this](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnpp
 - [Express.js](http://expressjs.com/guide.html); Node in Action is the official node-express book
 - [Firebase](https://www.firebase.com/docs/)
 - [Jade.js](http://jade-lang.com/reference)
-- [Bootstrap](http://www.sitepoint.com/twitter-bootstrap-tutorial-handling-complex-designs/)
+- [Bootstrap](http://www.sitepoint.com/twitter-bootstrap-tutorial-handling-complex-designs/) and [here](http://getbootstrap.com/css/)
 
 ## TO DO
 
