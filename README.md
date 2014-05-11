@@ -17,11 +17,14 @@ cd inboxr
 # Install inboxr-specific stuff
 npm install gulp
 npm install
+
+# Start the server
+gulp
+
+# To check if things are working, point your browser to localhost:8000
 ```
 
 Install [this](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) Chrome plug-in to enable LiveReload.
-
-To run, type 'gulp' in console in inboxr directory.
 
 ## Getting up to speed
 - [Express.js](http://expressjs.com/guide.html); Node in Action is the official node-express book
@@ -45,7 +48,7 @@ To run, type 'gulp' in console in inboxr directory.
 - Local, staging, production
 - Database set up
 - Deployment set up
-- Dev environment (browserify, gulp git)
+- Dev environment (browserify, gulp git): http://viget.com/extend/gulp-browserify-starter-faq
 - Front-end infrastructure
 - Analytics
 - Error tracking / monitoring
