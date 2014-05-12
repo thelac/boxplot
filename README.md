@@ -31,8 +31,6 @@ gulp
 # To check if things are working, point your browser to localhost:8000
 ```
 
-Install [this](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) Chrome plug-in to enable LiveReload.
-
 ## Getting up to speed
 - [Express.js](http://expressjs.com/guide.html); Node in Action is the official node-express book
 - [Firebase](https://www.firebase.com/docs/)
