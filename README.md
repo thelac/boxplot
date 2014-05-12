@@ -3,13 +3,20 @@ inboxr
 
 ## Installation from scratch
 ```
+
 # Install homebrew
 ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 
 # Install the basics
+brew install wget
 brew install git
 brew install hub
 brew install node
+
+# Install heroku toolkit (optional; for deploy)
+brew tap phinze/cask
+brew install brew-cask
+brew cask install --appdir="/Applications" heroku-toolbelt
 
 hub clone thelac/inboxr
 cd inboxr

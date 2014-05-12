@@ -18,7 +18,7 @@
     "browserify": "^3.46.1",
     "browserify-shim": "^3.4.1",
     "consolidate": "^0.10.0",
-    "debug": "~0.7.4",
+    "debug": "^0.8.1",
     "gulp": "^3.6.2",
     "gulp-dust": "~0.2.0",
     "gulp-git": "^0.4.2",
