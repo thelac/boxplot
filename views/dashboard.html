@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1> {{title}} </h1>
+  <p>Welcome to {{ title }} </p>
+    <p>a#users-link(href='/users/') Users home</p>
+    <br />
+    <p>a#groups-link(href='/groups/') Groups home</p>
+    <br />
+    <script src='public/js/main.js' ></script>
+{% endblock %}
