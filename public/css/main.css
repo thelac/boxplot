@@ -1,6 +1,35 @@
 html,
 body {
-  top: 10px;
-  color: #555;
-  background-color: #777666;
+  font: 10px sans-serif;
+}
+a {
+  color: #00B7FF;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+path {
+    stroke: #000;
+    stroke-width: 2;
+    fill: none;
+}
+
+#title {
+  font-size: 24pt;
+}
+
+
+#container{
+  width:100%;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
 }
