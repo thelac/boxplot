@@ -33,7 +33,7 @@ function filt(arr, name) {
 }
 
 // Style-related constants
-var colors = ["steelblue", "black", "red", "gold", "olivedrab", "powderblue", "orange", "orchid", "saddlebrown"],
+var colors = ["steelblue", "black", "red", "gold", "olivedrab", "powderblue", "orange", "orchid", "saddlebrown", "springgreen", "Chocolate"],
   w = 960,
   h = 500,
   margin = {
