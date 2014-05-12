@@ -1,20 +1,21 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('static-favicon');
-var logger = require('morgan');
+var express      = require('express');
+var session      = require('express-session')
+var path         = require('path');
+var favicon      = require('static-favicon');
+var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var nunjucks = require('nunjucks');
+var bodyParser   = require('body-parser');
+var nunjucks     = require('nunjucks');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var groups = require('./routes/groups');
+var passport     = require('passport');
+var flash        = require('connect-flash');
 
-var app = express();
+var app          = express();
 
+// configuration ===============================================================
 nunjucks.configure('views', {
-    autoescape: true,
-    express: app,
+  autoescape: true,
+  express: app,
 });
 
 app.use(favicon());
@@ -24,42 +25,21 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use('/public', express.static(process.cwd() + '/public'));
 
-app.use('/', routes);
+// required for passport
+app.use(session({ secret: 'theleatherapronclub' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+// routes ======================================================================
+require('./routes/index.js')(app, passport);
+var users  = require('./routes/users');
+var groups = require('./routes/groups');
+
+// app.use('/', index);
 app.use('/users', users);
 app.use('/groups', groups);
+
 app.listen(process.env.PORT || 8000);
-
-
-/// catch 404 and forwarding to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-/// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error.html', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error.html', {
-    message: err.message,
-    error: {}
-  });
-});
-
 
 module.exports = app;
