@@ -1,16 +1,16 @@
-var express      = require('express');
-var session      = require('express-session')
-var path         = require('path');
-var favicon      = require('static-favicon');
-var logger       = require('morgan');
+var express = require('express');
+var session = require('express-session')
+var path = require('path');
+var favicon = require('static-favicon');
+var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var nunjucks     = require('nunjucks');
+var bodyParser = require('body-parser');
+var nunjucks = require('nunjucks');
 
-var passport     = require('passport');
-var flash        = require('connect-flash');
+var passport = require('passport');
+var flash = require('connect-flash');
 
-var app          = express();
+var app = express();
 
 // configuration ===============================================================
 nunjucks.configure('views', {
@@ -26,14 +26,16 @@ app.use(cookieParser());
 app.use('/public', express.static(process.cwd() + '/public'));
 
 // required for passport
-app.use(session({ secret: 'theleatherapronclub' })); // session secret
+app.use(session({
+  secret: 'theleatherapronclub'
+})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./routes/index.js')(app, passport);
-var users  = require('./routes/users');
+var users = require('./routes/users');
 var groups = require('./routes/groups');
 
 app.use('/users', users);
@@ -43,15 +45,30 @@ app.listen(process.env.PORT || 8000);
 
 module.exports = app;
 
-// Database=====================================================================
+// Database ====================================================================
 require('./utils/db');
- 
-global.db.sequelize
-  .authenticate()
-  .complete(function(err) {
-    if (!!err) {
-      console.log('Unable to connect to the database:', err)
-    } else {
-      console.log('Connection has been established successfully.')
-    }
-  })
+
+// Authentication ==============================================================
+require('./config/passport')(passport);
+
+// global.db.sequelize
+//   .authenticate()
+//   .complete(function(err) {
+//     if ( !! err) {
+//       console.log('Unable to connect to the database:', err)
+//     } else {
+//       console.log('Connection has been established successfully.')
+//       global.db.User.create({
+//         email: 'danielsuo@gmail.com',
+//         password: 'test'
+//       }).success(function(user) {
+//         global.db.User.find({
+//           where: {
+//             email: 'danielsuo@gmail.com'
+//           }
+//         }).success(function(object) {
+//           console.log(object)
+//         });
+//       })
+//     }
+//   });
