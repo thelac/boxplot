@@ -44,14 +44,9 @@ app.listen(process.env.PORT || 8000);
 module.exports = app;
 
 // Database=====================================================================
-var Sequelize = require('sequelize')
-  , sequelize = new Sequelize('boxplot', null, null, {
-      host: 'localhost',
-      dialect: "postgres", // or 'sqlite', 'postgres', 'mariadb'
-      port:    5432, // or 5432 (for postgres)
-    })
+require('./utils/db');
  
-sequelize
+global.db.sequelize
   .authenticate()
   .complete(function(err) {
     if (!!err) {
