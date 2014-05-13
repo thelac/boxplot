@@ -36,10 +36,27 @@ require('./routes/index.js')(app, passport);
 var users  = require('./routes/users');
 var groups = require('./routes/groups');
 
-// app.use('/', index);
 app.use('/users', users);
 app.use('/groups', groups);
 
 app.listen(process.env.PORT || 8000);
 
 module.exports = app;
+
+// Database=====================================================================
+var Sequelize = require('sequelize')
+  , sequelize = new Sequelize('boxplot', null, null, {
+      host: 'localhost',
+      dialect: "postgres", // or 'sqlite', 'postgres', 'mariadb'
+      port:    5432, // or 5432 (for postgres)
+    })
+ 
+sequelize
+  .authenticate()
+  .complete(function(err) {
+    if (!!err) {
+      console.log('Unable to connect to the database:', err)
+    } else {
+      console.log('Connection has been established successfully.')
+    }
+  })
