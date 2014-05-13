@@ -13,7 +13,10 @@ module.exports = function(sequelize, DataTypes) {
     password: {
       type: DataTypes.STRING,
       allowNull: false
-    }
+    },
+    profileID: DataTypes.STRING,
+    token: DataTypes.STRING,
+    name: DataTypes.STRING
   }, {
     instanceMethods: {
       setPassword: function(password, done) {

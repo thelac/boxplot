@@ -1,8 +1,12 @@
 // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
 var User = global.db.User;
+
+// load the auth variables
+var configAuth = require('./auth');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -21,12 +25,50 @@ module.exports = function(passport) {
   // used to deserialize the user
   passport.deserializeUser(function(id, done) {
     User.find(id).success(function(user) {
-        console.log('Over and over and over!');
-        done(null, user);
+      done(null, user);
     }).error(function(err) {
-        done(err, null);
+      done(err, null);
     });
   });
+
+  // =========================================================================
+  // GOOGLE SIGNUP ===========================================================
+  // =========================================================================
+  // TODO: should refactor this with Local Signup, but not doing now since we
+  // will probably kill local signup (i.e., w/ username and password)
+  passport.use('google', new GoogleStrategy({
+      clientID: configAuth.googleAuth.clientID,
+      clientSecret: configAuth.googleAuth.clientSecret,
+      callbackURL: configAuth.googleAuth.callbackURL,
+      passReqToCallback: true
+    },
+    function(req, token, refreshToken, profile, done) {
+      process.nextTick(function() {
+        User.find({
+          where: {
+            profileID: profile.id
+          }
+        }).success(function(user) {
+          if (user) {
+            return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+          } else {
+            User.create({
+              email: profile.emails[0].value, // get first email address
+              password: 'dummy', // TODO: remove; dummy password for now
+              profileID: profile.id,
+              token: token,
+              name: profile.displayName
+            }).success(function(user) {
+              console.log('User created!');
+              return done(null, user);
+            })
+          }
+        }).error(function(error) {
+          console.log(error);
+          return done(error)
+        });
+      });
+    }));
 
   // =========================================================================
   // LOCAL SIGNUP ============================================================

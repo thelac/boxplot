@@ -5,7 +5,7 @@ module.exports = function(app, passport) {
   // =====================================
   app.get('/', function(req, res) {
     res.render('index.html', {
-      title: 'inboxr'
+      title: 'boxplot.io'
     });
   });
 
@@ -14,7 +14,7 @@ module.exports = function(app, passport) {
   // =====================================
   app.get('/dash', function(req, res) {
     res.render('dashboard.html', {
-      title: 'inboxr'
+      title: 'boxplot.io'
     });
   });
 
@@ -46,16 +46,33 @@ module.exports = function(app, passport) {
   });
 
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/dash', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+    successRedirect: '/dash', // redirect to the secure profile section
+    failureRedirect: '/signup', // redirect back to the signup page if there is an error
+    failureFlash: true // allow flash messages
   }));
 
   app.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+    successRedirect: '/profile', // redirect to the secure profile section
+    failureRedirect: '/login', // redirect back to the signup page if there is an error
+    failureFlash: true // allow flash messages
   }));
+
+  // =====================================
+  // GOOGLE ROUTES =======================
+  // =====================================
+  // send to google to do the authentication
+  // profile gets us their basic information including their name
+  // email gets their emails
+  app.get('/auth/google', passport.authenticate('google', {
+    scope: ['https://mail.google.com', 'profile', 'email']
+  }));
+
+  // the callback after google has authenticated the user
+  app.get('/auth/google/callback',
+    passport.authenticate('google', {
+      successRedirect: '/profile',
+      failureRedirect: '/'
+    }));
 
   // process the signup form
   // app.post('/signup', do all our passport stuff here);
@@ -82,7 +99,7 @@ module.exports = function(app, passport) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
+  console.log('logger')
   // if user is authenticated in the session, carry on 
   if (req.isAuthenticated())
     return next();
