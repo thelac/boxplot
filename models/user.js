@@ -29,6 +29,9 @@ module.exports = function(sequelize, DataTypes) {
         return bcrypt.compare(password, this.password, function(err, res) {
           return done(err, res);
         });
+      },
+      validatePassword: function(password, done) {
+        return password === this.password;
       }
     }
   });

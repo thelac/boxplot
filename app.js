@@ -50,25 +50,3 @@ require('./utils/db');
 
 // Authentication ==============================================================
 require('./config/passport')(passport);
-
-// global.db.sequelize
-//   .authenticate()
-//   .complete(function(err) {
-//     if ( !! err) {
-//       console.log('Unable to connect to the database:', err)
-//     } else {
-//       console.log('Connection has been established successfully.')
-//       global.db.User.create({
-//         email: 'danielsuo@gmail.com',
-//         password: 'test'
-//       }).success(function(user) {
-//         global.db.User.find({
-//           where: {
-//             email: 'danielsuo@gmail.com'
-//           }
-//         }).success(function(object) {
-//           console.log(object)
-//         });
-//       })
-//     }
-//   });

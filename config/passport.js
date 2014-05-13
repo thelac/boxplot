@@ -20,8 +20,11 @@ module.exports = function(passport) {
 
   // used to deserialize the user
   passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-      done(err, user);
+    User.find(id).success(function(user) {
+        console.log('Over and over and over!');
+        done(null, user);
+    }).error(function(err) {
+        done(err, null);
     });
   });
 
@@ -54,6 +57,31 @@ module.exports = function(passport) {
           console.log(user);
           return done(null, false, req.flash('signupMessage', 'WOOOO!'));
         })
+      }).error(function(error) {
+        console.log(error);
+        return done(error)
+      })
+    }));
+
+  passport.use('local-login', new LocalStrategy({
+      // by default, local strategy uses username and password, we will override with email
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
+    function(req, email, password, done) { // callback with email and password from our form
+
+      // find a user whose email is the same as the forms email
+      // we are checking to see if the user trying to login already exists
+      User.find({
+        where: {
+          email: email
+        }
+      }).success(function(user) {
+        if (user) {
+          if (user.validatePassword(password)) return done(null, user)
+          return done(null, false, req.flash('loginMessage', 'Bad password.'));
+        } else return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
       }).error(function(error) {
         console.log(error);
         return done(error)
