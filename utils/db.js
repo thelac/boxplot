@@ -25,8 +25,8 @@ if (!global.hasOwnProperty('db')) {
   global.db = {
     Sequelize: Sequelize,
     sequelize: sequelize,
-    User: sequelize.import('../models/user')
-    // add your other models here
+    User: sequelize.import('../models/user'),
+    Datum: sequelize.import('../models/datum')
   }
 
   sequelize
@@ -45,4 +45,5 @@ if (!global.hasOwnProperty('db')) {
     Associations can be defined here. E.g. like this:
     global.db.User.hasMany(global.db.SomethingElse)
   */
+  global.db.User.hasMany(global.db.Datum);
 }
