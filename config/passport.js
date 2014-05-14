@@ -52,11 +52,54 @@ module.exports = function(passport) {
           if (user) {
             return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
           } else {
+
+            var xoauth2 = require('xoauth2');
+            var generator = xoauth2.createXOAuth2Generator({
+              user: profile.emails[0].value,
+              clientId: configAuth.googleAuth.clientID,
+              clientSecret: configAuth.googleAuth.clientSecret,
+              refreshToken: refreshToken
+            });
+
+            generator.getToken(function(err, token) {
+              if (err) {
+                return console.log(err);
+              }
+              console.log("AUTH XOAUTH2 " + token);
+              var Imap = require('imap');
+              var imap = new Imap({
+                host: 'imap.gmail.com',
+                port: 993,
+                tls: true,
+                xoauth2: token,
+                connTimeout: 30000
+              });
+
+              imap.once('ready', function() {
+                console.log('connected!!!')
+                imap.openBox('INBOX', true, function(err, box) {
+                  console.log(box.messages.total);
+                });
+              });
+
+              imap.once('error', function(err) {
+                console.log(err);
+              });
+
+              imap.once('end', function() {
+                console.log('Connection ended');
+              });
+
+              imap.connect();
+
+            });
+
             User.create({
               email: profile.emails[0].value, // get first email address
               password: 'dummy', // TODO: remove; dummy password for now
               profileID: profile.id,
               token: token,
+              refreshToken: refreshToken,
               name: profile.displayName
             }).success(function(user) {
               console.log('User created!');

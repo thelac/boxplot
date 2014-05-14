@@ -64,7 +64,12 @@ module.exports = function(app, passport) {
   // profile gets us their basic information including their name
   // email gets their emails
   app.get('/auth/google', passport.authenticate('google', {
-    scope: ['https://mail.google.com', 'profile', 'email']
+    scope: ['https://mail.google.com', 
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email',
+          ],
+    accessType: 'offline',
+    approvalPrompt: 'force' // TODO: should not always force approvalPrompt, as it refreshes tokens
   }));
 
   // the callback after google has authenticated the user
@@ -99,7 +104,6 @@ module.exports = function(app, passport) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-  console.log('logger')
   // if user is authenticated in the session, carry on 
   if (req.isAuthenticated())
     return next();

@@ -16,6 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     profileID: DataTypes.STRING,
     token: DataTypes.STRING,
+    refreshToken: DataTypes.STRING,
     name: DataTypes.STRING
   }, {
     instanceMethods: {
