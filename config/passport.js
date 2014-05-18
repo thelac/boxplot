@@ -21,10 +21,10 @@ module.exports = function(passport) {
   // used to deserialize the user
   passport.deserializeUser(function(id, done) {
     User.find(id).success(function(user) {
-        console.log('Over and over and over!');
-        done(null, user);
+      console.log('Over and over and over!');
+      done(null, user);
     }).error(function(err) {
-        done(err, null);
+      done(err, null);
     });
   });
 
@@ -49,14 +49,17 @@ module.exports = function(passport) {
           email: email
         }
       }).success(function(user) {
-        if (user) return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-        else User.create({
-          email: email,
-          password: password
-        }).success(function(user) {
-          console.log(user);
-          return done(null, false, req.flash('signupMessage', 'WOOOO!'));
-        })
+        if (user) {
+          return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+        } else {
+          User.create({
+            email: email,
+            password: password
+          }).success(function(user) {
+            console.log(user);
+            return done(null, false, req.flash('signupMessage', 'WOOOO!'));
+          })
+        }
       }).error(function(error) {
         console.log(error);
         return done(error)
@@ -79,11 +82,14 @@ module.exports = function(passport) {
         }
       }).success(function(user) {
         if (user) {
-          if (user.validatePassword(password)) return done(null, user)
+          if (user.validatePassword(password, done)) {
+            return done(null, user)
+          }
           return done(null, false, req.flash('loginMessage', 'Bad password.'));
-        } else return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+        } else {
+          return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+        }
       }).error(function(error) {
-        console.log(error);
         return done(error)
       })
     }));
