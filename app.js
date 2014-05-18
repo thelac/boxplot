@@ -12,6 +12,12 @@ var flash = require('connect-flash');
 
 var app = express();
 
+// Database ====================================================================
+require('./utils/db');
+
+// Authentication ==============================================================
+require('./config/passport')(passport);
+
 // configuration ===============================================================
 nunjucks.configure('views', {
   autoescape: true,
@@ -44,9 +50,3 @@ app.use('/groups', groups);
 app.listen(process.env.PORT || 8000);
 
 module.exports = app;
-
-// Database ====================================================================
-require('./utils/db');
-
-// Authentication ==============================================================
-require('./config/passport')(passport);
