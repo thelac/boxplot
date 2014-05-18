@@ -1,4 +1,4 @@
-inboxr
+boxplot.io
 ======
 
 ## Installation from scratch
@@ -12,6 +12,19 @@ brew install wget
 brew install git
 brew install hub
 brew install node
+
+# Install postgres
+brew install postgres
+
+# Start postgres, start on boot
+initdb /usr/local/var/postgres
+cp /usr/local/Cellar/postgresql/[POSTGRES VERSION]/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+# To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
+
+# Create postgres db with no user or pass
+createdb boxplot
 
 # Install heroku toolkit (optional; for deploy)
 brew tap phinze/cask
@@ -34,7 +47,7 @@ gulp
 ## Getting up to speed
 - [Express.js](http://expressjs.com/guide.html); Node in Action is the official node-express book
 - [Firebase](https://www.firebase.com/docs/)
-- [Jade.js](http://jade-lang.com/reference)
+- [Nunjucks.js](http://mozilla.github.io/nunjucks/templating)
 - [Bootstrap](http://www.sitepoint.com/twitter-bootstrap-tutorial-handling-complex-designs/) and [here](http://getbootstrap.com/css/)
 
 ## TO DO
