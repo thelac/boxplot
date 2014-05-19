@@ -8,16 +8,22 @@ Group.define = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false
-    }
+    },
+    creator: DataTypes.INTEGER
   });
 
   return Group;
 };
 
-Group.new = function(name) {
+Group.new = function(data, success, failure) {
   global.db.Group.create({
-    name: name
-  })
+    name: data.name,
+    creator: data.creator
+  }).success(function(group) {
+    success(group);
+  }).error(function(err) {
+    failure(err);
+  });
 };
 
 Group.show = function() {
@@ -30,5 +36,7 @@ Group.addUser = function() {
 Group.removeUser = function() {
   // Remove a user and unlink data
 };
+
+Group.containsUser = function(id, user) {};
 
 module.exports = Group;

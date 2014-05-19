@@ -1,19 +1,12 @@
-{% extends "layout.html" %}
+{% extends "layout-auth.html" %}
 
-{% block content %}
-<div class="container">
-
-  <div class="page-header text-center">
-    <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-    <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-  </div>
-
+{% block auth %}
   <div class="row">
 
-    <!-- LOCAL INFORMATION -->
+    <!-- USER INFORMATION -->
     <div class="col-sm-6">
       <div class="well">
-        <h3><span class="fa fa-user"></span> Local</h3>
+        <h3><span class="fa fa-user"></span>My Account</h3>
 
           <p>
             <strong>id</strong>: {{user.id}}<br>
@@ -26,7 +19,8 @@
       </div>
     </div>
 
-  </div>
+    <a href="/group/new" class="btn btn-default"><span class="fa fa-group"></span> Create new group</a>
+    <a href="/user/groups" class="btn btn-default"><span class="fa fa-group"></span> See my groups</a>
 
-</div>
+  </div>
 {% endblock %}

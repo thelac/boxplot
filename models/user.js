@@ -1,3 +1,5 @@
+var Group = require('./group');
+
 var User = function() {};
 
 User.define = function(sequelize, DataTypes) {
@@ -19,15 +21,36 @@ User.define = function(sequelize, DataTypes) {
   return User;
 };
 
-User.new = function() {
-  // Create new user
+User.new = function(data, callback, error) {
+  User.create({
+    email: data.email,
+    profileID: data.profileID,
+    token: data.token,
+    refreshToken: data.refreshToken,
+    name: data.name
+  }).success(function(user) {
+    callback(user);
+  }).error(function(err) {
+    error(err);
+  })
 };
+
 User.show = function() {
   // Show user profile
 };
 
-User.createGroup = function () {
-  // Should tie creator to new group
+User.find = function() {
+
+};
+
+User.createGroup = function(data, success, failure) {
+  Group.new({name: data.name, creator: data.user.id}, function(group) {
+    group.addUser(data.user).success(function() {
+      success(data.user, group);
+    })
+  }, function(error) {
+    failure(data.user, error);
+  });
 };
 User.deleteGroup = function() {
   // Only creator should be able to delete

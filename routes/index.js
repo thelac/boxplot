@@ -5,7 +5,7 @@ module.exports = function(app, passport) {
   // =====================================
   app.get('/', function(req, res) {
     if (req.isAuthenticated()) {
-      res.redirect('/profile');
+      res.redirect('/user');
     } else {
       res.render('index.html', {
         title: 'boxplot.io'
@@ -33,26 +33,16 @@ module.exports = function(app, passport) {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
     ],
-    accessType: 'offline'
+    accessType: 'offline',
+    approvalPrompt: 'force' // TODO: remove
   }));
 
   // the callback after google has authenticated the user
   app.get('/auth/google/callback',
     passport.authenticate('google', {
-      successRedirect: '/profile',
+      successRedirect: '/user',
       failureRedirect: '/'
     }));
-
-  // =====================================
-  // PROFILE SECTION =====================
-  // =====================================
-  // we will want this protected so you have to be logged in to visit
-  // we will use route middleware to verify this (the isLoggedIn function)
-  app.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile.html', {
-      user: req.user // get the user out of session and pass to template
-    });
-  });
 
   // =====================================
   // LOGOUT ==============================

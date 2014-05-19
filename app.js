@@ -41,11 +41,11 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./routes/index.js')(app, passport);
-var users = require('./routes/users');
-var groups = require('./routes/groups');
+var users = require('./routes/user');
+var groups = require('./routes/group');
 
-app.use('/users', users);
-app.use('/groups', groups);
+app.use('/user', users);
+app.use('/group', groups);
 
 app.listen(process.env.PORT || 8000);
 
