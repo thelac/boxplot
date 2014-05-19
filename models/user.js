@@ -19,11 +19,27 @@ User.define = function(sequelize, DataTypes) {
   return User;
 };
 
-User.new = function() {};
-User.show = function() {};
+User.new = function() {
+  // Create new user
+};
+User.show = function() {
+  // Show user profile
+};
 
-User.createGroup = function () {};
-User.deleteGroup = function() {};
-User.showGroups = function() {};
+User.createGroup = function () {
+  // Should tie creator to new group
+};
+User.deleteGroup = function() {
+  // Only creator should be able to delete
+};
+User.joinGroup = function() {
+  // Join group; requires group hash
+};
+User.leaveGroup = function() {
+  // Leave group
+};
+User.showGroups = function() {
+  // Show list of current groups
+};
 
 module.exports = User;

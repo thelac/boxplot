@@ -22,9 +22,15 @@ Group.new = function(name) {
   })
 };
 
-Group.show = function() {};
+Group.show = function() {
+  // Dashboard view of charts
+};
 
-Group.addUser = function() {};
-Group.removeUser = function() {};
+Group.addUser = function() {
+  // Add a user (send email with hash and some instructions)
+};
+Group.removeUser = function() {
+  // Remove a user and unlink data
+};
 
 module.exports = Group;
