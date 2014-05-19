@@ -25,5 +25,8 @@ if (!global.hasOwnProperty('db')) {
     Associations can be defined here. E.g. like this:
     global.db.User.hasMany(global.db.SomethingElse)
   */
-  global.db.User.hasMany(global.db.Datum);
+  // global.db.User.hasMany(global.db.Datum);
+  global.db.Datum
+    .hasOne(global.db.User)
+    .belongsTo(global.db.User);
 }

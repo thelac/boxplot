@@ -1,12 +1,19 @@
+// load the auth variables
+var configAuth = require('../config/auth');
+
 module.exports = function(app, passport) {
 
   // =====================================
   // HOME PAGE (with login links) ========
   // =====================================
   app.get('/', function(req, res) {
-    res.render('index.html', {
-      title: 'boxplot.io'
-    });
+    if (req.isAuthenticated()) {
+      res.redirect('/profile');
+    } else {
+      res.render('index.html', {
+        title: 'boxplot.io'
+      });
+    }
   });
 
   // =====================================
@@ -19,57 +26,17 @@ module.exports = function(app, passport) {
   });
 
   // =====================================
-  // LOGIN ===============================
-  // =====================================
-  // show the login form
-  app.get('/login', function(req, res) {
-
-    // render the page and pass in any flash data if it exists
-    res.render('login.html', {
-      message: req.flash('loginMessage')
-    });
-  });
-
-  // process the login form
-  // app.post('/login', do all our passport stuff here);
-
-  // =====================================
-  // SIGNUP ==============================
-  // =====================================
-  // show the signup form
-  app.get('/signup', function(req, res) {
-
-    // render the page and pass in any flash data if it exists
-    res.render('signup.html', {
-      message: req.flash('signupMessage')
-    });
-  });
-
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/dash', // redirect to the secure profile section
-    failureRedirect: '/signup', // redirect back to the signup page if there is an error
-    failureFlash: true // allow flash messages
-  }));
-
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/profile', // redirect to the secure profile section
-    failureRedirect: '/login', // redirect back to the signup page if there is an error
-    failureFlash: true // allow flash messages
-  }));
-
-  // =====================================
   // GOOGLE ROUTES =======================
   // =====================================
   // send to google to do the authentication
   // profile gets us their basic information including their name
   // email gets their emails
   app.get('/auth/google', passport.authenticate('google', {
-    scope: ['https://mail.google.com', 
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/userinfo.email',
-          ],
+    scope: ['https://mail.google.com',
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+    ],
     accessType: 'offline',
-    approvalPrompt: 'force' // TODO: should not always force approvalPrompt, as it refreshes tokens
   }));
 
   // the callback after google has authenticated the user
@@ -79,9 +46,6 @@ module.exports = function(app, passport) {
       failureRedirect: '/'
     }));
 
-  // process the signup form
-  // app.post('/signup', do all our passport stuff here);
-
   // =====================================
   // PROFILE SECTION =====================
   // =====================================
@@ -90,6 +54,54 @@ module.exports = function(app, passport) {
   app.get('/profile', isLoggedIn, function(req, res) {
     res.render('profile.html', {
       user: req.user // get the user out of session and pass to template
+    });
+  });
+
+  // =====================================
+  // POLL ================================
+  // =====================================
+
+  app.get('/poll', isLoggedIn, function(req, res) {
+    console.log(req.user)
+    var xoauth2 = require('xoauth2');
+    var generator = xoauth2.createXOAuth2Generator({
+      user: req.user.email,
+      clientId: configAuth.googleAuth.clientID,
+      clientSecret: configAuth.googleAuth.clientSecret,
+      refreshToken: req.user.refreshToken
+    });
+
+    generator.getToken(function(err, token) {
+      if (err) {
+        return console.log(err);
+      }
+      console.log("AUTH XOAUTH2 " + token);
+      var Imap = require('imap');
+      var imap = new Imap({
+        host: 'imap.gmail.com',
+        port: 993,
+        tls: true,
+        xoauth2: token,
+        connTimeout: 30000
+      });
+
+      imap.once('ready', function() {
+        console.log('connected!!!')
+        imap.openBox('INBOX', true, function(err, box) {
+          console.log(box.messages.total);
+        });
+      });
+
+      imap.once('error', function(err) {
+        console.log(err);
+      });
+
+      imap.once('end', function() {
+        console.log('Connection ended');
+      });
+
+      imap.connect();
+
     });
   });
 
