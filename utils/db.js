@@ -1,3 +1,7 @@
+var User = require('../models/user');
+var Datum = require('../models/datum');
+var Group = require('../models/group');
+
 if (!global.hasOwnProperty('db')) {
   var Sequelize = require('sequelize'),
     sequelize = null;
@@ -15,11 +19,12 @@ if (!global.hasOwnProperty('db')) {
 
   global.db = {
     Sequelize: Sequelize,
-    sequelize: sequelize,
-    User: sequelize.import('../models/user'),
-    Datum: sequelize.import('../models/datum')
+    sequelize: sequelize
   };
 
+  global.db.User = User.define(sequelize, Sequelize);
+  global.db.Datum = Datum.define(sequelize, Sequelize);
+  global.db.Group = Group.define(sequelize, Sequelize)
   /*
     Associations can be defined here. E.g. like this:
     global.db.User.hasMany(global.db.SomethingElse)
@@ -28,6 +33,9 @@ if (!global.hasOwnProperty('db')) {
   global.db.Datum
     .hasOne(global.db.User)
     .belongsTo(global.db.User);
+
+  global.db.User.hasMany(global.db.Group);
+  global.db.Group.hasMany(global.db.User);
 
   require('./sync_db')(false);
 }

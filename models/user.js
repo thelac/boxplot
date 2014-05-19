@@ -1,4 +1,6 @@
-module.exports = function(sequelize, DataTypes) {
+var User = function() {};
+
+User.define = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
     email: {
       type: DataTypes.STRING,
@@ -16,3 +18,12 @@ module.exports = function(sequelize, DataTypes) {
 
   return User;
 };
+
+User.new = function() {};
+User.show = function() {};
+
+User.createGroup = function () {};
+User.deleteGroup = function() {};
+User.showGroups = function() {};
+
+module.exports = User;

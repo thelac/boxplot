@@ -5,7 +5,6 @@ var configAuth = require('../config/auth');
 
 module.exports = function() {
   global.db.User.all().success(function(users) {
-    console.log('test')
     for (i in users) {
       var user = users[i];
       var xoauth2 = require('xoauth2');
