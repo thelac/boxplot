@@ -18,9 +18,8 @@ if (!global.hasOwnProperty('db')) {
     sequelize: sequelize,
     User: sequelize.import('../models/user'),
     Datum: sequelize.import('../models/datum')
-  }
+  };
 
-  require('./sync_db')(false);
   /*
     Associations can be defined here. E.g. like this:
     global.db.User.hasMany(global.db.SomethingElse)
@@ -29,4 +28,6 @@ if (!global.hasOwnProperty('db')) {
   global.db.Datum
     .hasOne(global.db.User)
     .belongsTo(global.db.User);
+
+  require('./sync_db')(false);
 }

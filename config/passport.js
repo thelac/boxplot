@@ -57,18 +57,15 @@ module.exports = function(passport) {
             } else {
               User.create({
                 email: profile.emails[0].value, // get first email address
-                password: 'dummy', // TODO: remove; dummy password for now
                 profileID: profile.id,
                 token: token,
                 refreshToken: refreshToken,
                 name: profile.displayName
               }).success(function(user) {
-                console.log('User created!');
                 return done(null, user);
               })
             }
           }).error(function(error) {
-            console.log(error);
             return done(error);
           });
         }
