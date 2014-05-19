@@ -50,7 +50,7 @@ app.use('/groups', groups);
 app.listen(process.env.PORT || 8000);
 
 // setInterval(function() {
-require('./utils/poll');
-// }, 10000)
+  require('./utils/poll')();
+// }, 5000)
 
 module.exports = app;

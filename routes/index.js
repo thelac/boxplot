@@ -33,8 +33,7 @@ module.exports = function(app, passport) {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
     ],
-    accessType: 'offline',
-    approvalPrompt: 'force'
+    accessType: 'offline'
   }));
 
   // the callback after google has authenticated the user
