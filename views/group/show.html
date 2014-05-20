@@ -1,0 +1,35 @@
+{% extends "layout-auth.html" %}
+
+{% block auth %}
+<script src='http://d3js.org/d3.v3.min.js'></script>    
+    <div id='dash'>
+      <script src='/public/js/main.js'></script>
+      <script>
+        var dir = window.location.href;
+        dir = dir.substr(dir.length - 1) === '/' ? dir.substring(0, dir.length - 1) : dir;
+        console.log(dir)
+      </script>
+    </div>
+
+  <hr>
+
+  <form action="/group/{{ group.id }}/add" method="post">
+    <div class="form-group">
+      <label>New user email</label>
+      <input type="text" class="form-control" name="email">
+    </div>
+
+    <button type="submit" class="btn btn-warning btn-lg">Add user</button>
+  </form>
+  
+  <hr>
+  <div class='panel panel-default'>
+    <div class="panel-heading"><b>Current users in this group</b></div>
+    <ul class="list-group">
+    {% for user in users %}
+      <li class="list-group-item">{{ user.email }}</li>
+    {% endfor %}
+    <ul>
+  </div>
+  
+{% endblock %}

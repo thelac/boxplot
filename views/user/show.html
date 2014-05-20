@@ -1,0 +1,36 @@
+{% extends "layout-auth.html" %}
+
+{% block auth %}
+  <div class="row">
+
+    <!-- USER INFORMATION -->
+    <div class="col-sm-6">
+       <div class='panel panel-default'>
+        <div class="panel-heading"><h3><span class="fa fa-group"></span>My Account</h3></div>
+        <ul class="list-group">
+          <li class="list-group-item"><b>id</b>: {{user.id}}</li>
+          <li class="list-group-item"><b>email</b>: {{user.email}}</li>
+          <li class="list-group-item"><b>name</b>: {{user.name}} </li>
+        <ul>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class='panel panel-default'>
+        <div class="panel-heading"><h3><span class="fa fa-group"></span>My Groups</h3></div>
+        <ul class="list-group">
+        {% for group in groups %}
+          <li class="list-group-item"><a href='/group/{{ group.id }}'>{{ group.name }}</a></li>
+        {% endfor %}
+        <ul>
+      </div>
+      
+      <br>
+
+      <a href="/group/new" class="btn btn-default"><span class="fa fa-group"></span> Create new group</a>
+
+    </div>
+  </div>
+
+  <hr>
+  
+{% endblock %}

@@ -5,9 +5,6 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 // load up the user model
 var User = global.db.User;
 
-// load the auth variables
-var configAuth = require('./auth');
-
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -37,9 +34,9 @@ module.exports = function(passport) {
   // TODO: should refactor this with Local Signup, but not doing now since we
   // will probably kill local signup (i.e., w/ username and password)
   passport.use('google', new GoogleStrategy({
-      clientID: configAuth.googleAuth.clientID,
-      clientSecret: configAuth.googleAuth.clientSecret,
-      callbackURL: configAuth.googleAuth.callbackURL,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
       passReqToCallback: true
     },
     function(req, token, refreshToken, profile, done) {

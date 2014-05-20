@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="page-header text-center">
+  <h1><span class="fa fa-anchor"></span> {{ title }}</h1>
+  <a href="/" class="btn btn-default btn-sm">Home</a>
+  <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+</div>
+
+{% block auth %}{% endblock %}
+
+{% endblock %}

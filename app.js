@@ -1,3 +1,5 @@
+require('./utils/process_env.js');
+
 var express = require('express');
 var session = require('express-session')
 var path = require('path');
@@ -9,6 +11,9 @@ var nunjucks = require('nunjucks');
 
 var passport = require('passport');
 var flash = require('connect-flash');
+
+var activator = require('activator');
+var User = require('./models/user');
 
 var app = express();
 
@@ -33,7 +38,7 @@ app.use('/public', express.static(process.cwd() + '/public'));
 
 // required for passport
 app.use(session({
-  secret: 'theleatherapronclub'
+  secret: process.env.PASSPORT_SESSION_SECRET
 })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -41,17 +46,23 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./routes/index.js')(app, passport);
-var users = require('./routes/users');
-var groups = require('./routes/groups');
+var users = require('./routes/user');
+var groups = require('./routes/group');
 
-app.use('/users', users);
-app.use('/groups', groups);
+app.use('/user', users);
+app.use('/group', groups);
 
 app.listen(process.env.PORT || 8000);
 
+// TODO: this is incredibly bad practice
+process.on('uncaughtException', function (exception) {
+  console.log(exception);
+});
+
 // TODO: will set interval to poll gmail for data
+var pollingFrequency = 30 * 60 * 1000;
 // setInterval(function() {
   require('./utils/poll')();
-// }, 5000)
+// }, pollingFrequency);
 
 module.exports = app;

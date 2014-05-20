@@ -1,0 +1,19 @@
+{% extends "layout-auth.html" %}
+
+{% block auth %}
+
+<div class="col-sm-6 col-sm-offset-3">
+
+  <hr>
+
+  <!-- show any messages that come back with authentication -->
+  <ul class="list-group">
+  {% for group in groups %}
+    <li class="list-group-item"><a href='/group/{{ group.id }}'>{{ group.name }}</a></li>
+  {% endfor %}
+  <ul>
+
+  <hr>
+
+</div>
+{% endblock %}

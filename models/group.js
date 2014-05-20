@@ -9,17 +9,21 @@ Group.define = function(sequelize, DataTypes) {
       unique: true,
       allowNull: false
     },
-    hash: DataTypes.STRING
+    creator: DataTypes.INTEGER
   });
 
   return Group;
 };
 
-Group.new = function(name) {
+Group.new = function(data, success, failure) {
   global.db.Group.create({
-    name: name,
-    hash: crypto.createHash('md5').update(name).digest('hex')
-  })
+    name: data.name,
+    creator: data.creator
+  }).success(function(group) {
+    success(group);
+  }).error(function(err) {
+    failure(err);
+  });
 };
 
 Group.show = function() {
@@ -32,5 +36,7 @@ Group.addUser = function() {
 Group.removeUser = function() {
   // Remove a user and unlink data
 };
+
+Group.containsUser = function(id, user) {};
 
 module.exports = Group;

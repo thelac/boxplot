@@ -1,7 +1,6 @@
-{% extends "layout.html" %}
+{% extends "layout-auth.html" %}
 
 {% block content %}
-<div class="container">
 
   <div class="jumbotron text-center">
     <h1><span class="fa fa-lock"></span> {{ title }} </h1>
@@ -11,6 +10,4 @@
     <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
 
   </div>
-
-</div>
 {% endblock %}
