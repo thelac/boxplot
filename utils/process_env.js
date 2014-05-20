@@ -1,10 +1,10 @@
-var env = require('../config/env');
+var fs = require('fs');
 
 // load the env variables
-// var envPath = '../config/env.json';
-// if (fs.existsSync(envPath)) {
-//   var envConfig = require(envPath);
-  Object.keys(env).forEach(function(key){
-    process.env[key] = env[key];
+var envPath = __dirname + '/../config/env.js';
+if (fs.existsSync(envPath)) {
+  var envConfig = require(envPath);
+  Object.keys(envConfig).forEach(function(key){
+    process.env[key] = envConfig[key];
   });
-// }
+}
