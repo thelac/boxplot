@@ -32,11 +32,15 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
           email: req.body.email
         }
       }).success(function(user) {
+        console.log(user)
         if (user) {
           group.addUser(user).success(function() {
             console.log('Successfully added!');
             res.redirect('/group/' + req.params.id);
           })
+        } else {
+          req.flash('userAddError', 'Unable to add :( Invite your friend to sign up!');
+          res.redirect('/group/' + req.params.id);
         }
       })
     })
@@ -77,9 +81,10 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
       if (group && group.hasUser(req.user)) {
         group.getUsers().success(function(users) {
           res.render('group/show.html', {
-            title: 'Group ' + group.name,
+            title: group.name,
             group: group,
-            users: users
+            users: users,
+            message: req.flash('userAddError')
           });
         })
       } else {
