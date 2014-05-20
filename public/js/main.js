@@ -165,7 +165,7 @@ d3.json(dir + '/data', function(data) {
     i = names_arr[j].name;
 
     svg.append("svg:rect")
-      .attr("x", 20)
+      .attr("x", 55)
       .attr("y", 40 + y_offset)
       .attr("style", "stroke: " + names_dict[i].color)
       .attr("height", "1")
@@ -173,13 +173,13 @@ d3.json(dir + '/data', function(data) {
 
 
     svg.append("svg:text")
-      .attr("x", 55)
+      .attr("x", 90)
       .attr("y", 45 + y_offset)
       .text(i);
 
 
     svg.append("svg:text")
-      .attr("x", 120)
+      .attr("x", 20)
       .attr("y", 45 + y_offset)
       .text(names_dict[i].last);
 

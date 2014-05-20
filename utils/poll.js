@@ -2,7 +2,6 @@ require('./db');
 
 module.exports = function() {
 
-
   global.db.User.all().success(function(users) {
     users.forEach(function(user) {
       var xoauth2 = require('xoauth2');
