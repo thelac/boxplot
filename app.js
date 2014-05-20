@@ -1,3 +1,5 @@
+require('./utils/process_env.js');
+
 var express = require('express');
 var session = require('express-session')
 var path = require('path');
@@ -36,7 +38,7 @@ app.use('/public', express.static(process.cwd() + '/public'));
 
 // required for passport
 app.use(session({
-  secret: 'theleatherapronclub'
+  secret: process.env.PASSPORT_SESSION_SECRET
 })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -58,8 +60,9 @@ process.on('uncaughtException', function (exception) {
 });
 
 // TODO: will set interval to poll gmail for data
+var pollingFrequency = 30 * 60 * 1000;
 // setInterval(function() {
   require('./utils/poll')();
-// }, 5000)
+// }, pollingFrequency);
 
 module.exports = app;

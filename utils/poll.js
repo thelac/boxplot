@@ -1,18 +1,16 @@
 require('./db');
 
-// load the auth variables
-var configAuth = require('../config/auth');
-
 module.exports = function() {
 
 
   global.db.User.all().success(function(users) {
     users.forEach(function(user) {
       var xoauth2 = require('xoauth2');
+
       var generator = xoauth2.createXOAuth2Generator({
         user: user.email,
-        clientId: configAuth.googleAuth.clientID,
-        clientSecret: configAuth.googleAuth.clientSecret,
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         refreshToken: user.refreshToken
       });
 

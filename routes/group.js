@@ -16,7 +16,7 @@ router.post('/new', utils.isLoggedIn, function(req, res) {
     user: req.user,
     name: req.body.name
   }, function(user, group) { // Success
-    res.redirect('/user/groups');
+    res.redirect('/user');
   }, function(user, error) { // Failure
     res.render('group/new.html', {
       message: req.flash('Group failed!')
