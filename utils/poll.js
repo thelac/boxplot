@@ -1,11 +1,13 @@
 require('./db');
+var Imap = require('imap');
+var async = require('async');
+var xoauth2 = require('xoauth2');
 
 module.exports = function() {
 
   global.db.User.all().success(function(users) {
     users.forEach(function(user) {
-      var xoauth2 = require('xoauth2');
-
+      
       var generator = xoauth2.createXOAuth2Generator({
         user: user.email,
         clientId: process.env.GOOGLE_CLIENT_ID,
@@ -17,8 +19,7 @@ module.exports = function() {
         if (err) {
           return console.log(err);
         }
-        console.log("AUTH XOAUTH2 " + token);
-        var Imap = require('imap');
+
         var imap = new Imap({
           host: 'imap.gmail.com',
           port: 993,
@@ -28,21 +29,20 @@ module.exports = function() {
         });
 
         imap.once('ready', function() {
-          console.log('connected!!!')
           imap.openBox('INBOX', true, function(err, box) {
             var datum = global.db.Datum.create({
               count: box.messages.total
             })
               .success(function(d) {
                 d.setUser(user);
-                console.log(d.count);
-                console.log(user.email)
+                console.log('Polled user: ' + user.email + ' (' + d.count + ')');
+                imap.destroy();
               })
           });
         });
 
         imap.once('error', function(err) {
-          console.log(err);
+          console.log('IMAP error: ' + err);
         });
 
         imap.once('end', function() {
