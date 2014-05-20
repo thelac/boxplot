@@ -59,6 +59,11 @@ module.exports = function(passport) {
                 refreshToken: refreshToken,
                 name: profile.displayName
               }).success(function(user) {
+                var msg = 'New user ' + user.email + '!';
+                global.mg.sendText('danielsuo@gmail.com', 'danielsuo@gmail.com', msg, 'Move along, folks.', {}, function(err) {
+                  err && console.log(err);
+                  console.log(msg);
+                });
                 return done(null, user);
               })
             }
