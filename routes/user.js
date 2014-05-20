@@ -1,19 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var utils = require('../utils/utils');
 
-router.get('/groups', function(req, res) {
+router.get('/', utils.isLoggedIn, function(req, res) {
   req.user.getGroups().success(function(groups) {
-    res.render('user/groups.html', {
-      title: 'My Groups',
-      groups: groups
+    res.render('user/show.html', {
+      title: req.user.name,
+      groups: groups,
+      user: req.user // get the user out of session and pass to template
     });
-  });
-});
-
-router.get('/', function(req, res) {
-  res.render('user/show.html', {
-    title: req.user.name,
-    user: req.user // get the user out of session and pass to template
   });
 });
 

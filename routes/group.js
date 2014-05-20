@@ -1,16 +1,17 @@
 var Group = require('../models/group');
 var User = require('../models/user');
 var express = require('express');
+var utils = require('../utils/utils');
 var async = require('async');
 var router = express.Router();
 
-router.get('/new', function(req, res) {
+router.get('/new', utils.isLoggedIn, function(req, res) {
   res.render('group/new.html', {
     title: 'New Group'
   });
 });
 
-router.post('/new', function(req, res) {
+router.post('/new', utils.isLoggedIn, function(req, res) {
   User.createGroup({
     user: req.user,
     name: req.body.name
@@ -23,7 +24,7 @@ router.post('/new', function(req, res) {
   });
 });
 
-router.post('/:id/add', function(req, res) {
+router.post('/:id/add', utils.isLoggedIn, function(req, res) {
   global.db.Group.find(req.params.id)
     .success(function(group) {
       global.db.User.find({
@@ -41,7 +42,7 @@ router.post('/:id/add', function(req, res) {
     })
 });
 
-router.get('/:id/data', function(req, res) {
+router.get('/:id/data', utils.isLoggedIn, function(req, res) {
   // TODO: this should be cleaned up massively
   // Should probably do straight up SQL query
   // Logic should also go elsewhere
@@ -70,7 +71,7 @@ router.get('/:id/data', function(req, res) {
   });
 });
 
-router.get('/:id', function(req, res) {
+router.get('/:id', utils.isLoggedIn, function(req, res) {
   global.db.Group.find(req.params.id)
     .success(function(group) {
       if (group && group.hasUser(req.user)) {
