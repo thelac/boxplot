@@ -13,7 +13,6 @@ var passport = require('passport');
 var flash = require('connect-flash');
 
 var activator = require('activator');
-var User = require('./models/user');
 
 var app = express();
 
@@ -65,6 +64,12 @@ var groups = require('./routes/group');
 
 app.use('/user', users);
 app.use('/group', groups);
+app.get('*', function(req, res) {
+  res.render('error.html', {
+    auth: req.isAuthenticated()
+  });
+});
+
 
 app.listen(process.env.PORT || 8000);
 

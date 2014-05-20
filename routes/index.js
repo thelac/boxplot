@@ -1,19 +1,6 @@
 module.exports = function(app, passport) {
 
   // =====================================
-  // HOME PAGE (with login links) ========
-  // =====================================
-  app.get('/', function(req, res) {
-    if (req.isAuthenticated()) {
-      res.redirect('/user');
-    } else {
-      res.render('index.html', {
-        title: 'boxplot.io'
-      });
-    }
-  });
-
-  // =====================================
   // DASHBOARD PAGE ======================
   // =====================================
   app.get('/dash', function(req, res) {
@@ -50,5 +37,18 @@ module.exports = function(app, passport) {
   app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
+  });
+
+  // =====================================
+  // HOME PAGE (with login links) ========
+  // =====================================
+  app.get('/', function(req, res) {
+    if (req.isAuthenticated()) {
+      res.redirect('/user');
+    } else {
+      res.render('index.html', {
+        title: 'boxplot.io'
+      });
+    }
   });
 };

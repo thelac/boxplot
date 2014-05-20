@@ -1,7 +1,17 @@
 {% extends "layout-auth.html" %}
 
-{% block auth %}
-  <h1>{{ message }}</h1>
-  <h2>{{ error.status }}</h2>
-  <pre>{{error.stack}}</pre>
+{% block content %}
+
+  <div class="jumbotron text-center">
+    <h1><span class="fa fa-lock"></span> {{ title }} </h1>
+
+    <p>Oops, that page isn't available!</p>
+    
+    {% if auth %}
+      <a href="/" class="btn btn-default btn-sm"> Home</a>
+    {% else %}
+      <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Log In</a>
+    {% endif %}
+
+  </div>
 {% endblock %}

@@ -46,7 +46,10 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
 });
 
 router.post('/:id/remove', utils.isLoggedIn, function(req, res) {
+  global.db.Group.find(req.params.id)
+    .success(function(group) {
 
+    })
 });
 
 router.post('/:id/poll', utils.isLoggedIn, function(req, res) {
@@ -75,7 +78,6 @@ router.get('/:id/data', utils.isLoggedIn, function(req, res) {
           })
         })
       }, function(err) {
-        console.log('done!')
         res.json(results);
       });
     });
