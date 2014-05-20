@@ -4,9 +4,13 @@ module.exports = function(app, passport) {
   // HOME PAGE (with login links) ========
   // =====================================
   app.get('/', function(req, res) {
-    res.render('index.html', {
-      title: 'inboxr'
-    });
+    if (req.isAuthenticated()) {
+      res.redirect('/profile');
+    } else {
+      res.render('index.html', {
+        title: 'boxplot.io'
+      });
+    }
   });
 
   // =====================================
@@ -14,51 +18,30 @@ module.exports = function(app, passport) {
   // =====================================
   app.get('/dash', function(req, res) {
     res.render('dashboard.html', {
-      title: 'inboxr'
+      title: 'boxplot.io'
     });
   });
 
   // =====================================
-  // LOGIN ===============================
+  // GOOGLE ROUTES =======================
   // =====================================
-  // show the login form
-  app.get('/login', function(req, res) {
-
-    // render the page and pass in any flash data if it exists
-    res.render('login.html', {
-      message: req.flash('loginMessage')
-    });
-  });
-
-  // process the login form
-  // app.post('/login', do all our passport stuff here);
-
-  // =====================================
-  // SIGNUP ==============================
-  // =====================================
-  // show the signup form
-  app.get('/signup', function(req, res) {
-
-    // render the page and pass in any flash data if it exists
-    res.render('signup.html', {
-      message: req.flash('signupMessage')
-    });
-  });
-
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/dash', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+  // send to google to do the authentication
+  // profile gets us their basic information including their name
+  // email gets their emails
+  app.get('/auth/google', passport.authenticate('google', {
+    scope: ['https://mail.google.com',
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+    ],
+    accessType: 'offline'
   }));
 
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-  }));
-
-  // process the signup form
-  // app.post('/signup', do all our passport stuff here);
+  // the callback after google has authenticated the user
+  app.get('/auth/google/callback',
+    passport.authenticate('google', {
+      successRedirect: '/profile',
+      failureRedirect: '/'
+    }));
 
   // =====================================
   // PROFILE SECTION =====================
@@ -82,7 +65,6 @@ module.exports = function(app, passport) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
   // if user is authenticated in the session, carry on 
   if (req.isAuthenticated())
     return next();

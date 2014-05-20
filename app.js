@@ -49,4 +49,9 @@ app.use('/groups', groups);
 
 app.listen(process.env.PORT || 8000);
 
+// TODO: will set interval to poll gmail for data
+// setInterval(function() {
+  require('./utils/poll')();
+// }, 5000)
+
 module.exports = app;
