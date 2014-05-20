@@ -10,6 +10,9 @@ brew install git
 brew install hub
 brew install node
 
+alias git=hub
+npm install -g gh
+
 # Install postgres
 brew install postgres
 
@@ -28,7 +31,7 @@ brew tap phinze/cask
 brew install brew-cask
 brew cask install --appdir="/Applications" heroku-toolbelt
 
-hub clone thelac/inboxr
+git clone thelac/inboxr
 cd inboxr
 
 # Install inboxr-specific stuff

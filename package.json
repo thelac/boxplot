@@ -25,7 +25,10 @@
     "activator": "~0.2.8",
     "async": "~0.9.0",
     "mailgun": "~0.4.2",
-    "mailcomposer": "~0.2.11"
+    "mailcomposer": "~0.2.11",
+    "connect-pg": "~1.1.5",
+    "connect-pg-simple": "~1.0.2",
+    "connect": "~2.16.2"
   },
   "devDependencies": {
     "consolidate": "^0.10.0",

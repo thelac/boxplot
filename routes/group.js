@@ -32,10 +32,9 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
           email: req.body.email
         }
       }).success(function(user) {
-        console.log(user)
         if (user) {
           group.addUser(user).success(function() {
-            console.log('Successfully added!');
+            console.log('User ' + user.email + 'successfully added to ' + group.name + '!');
             res.redirect('/group/' + req.params.id);
           })
         } else {
@@ -44,6 +43,14 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
         }
       })
     })
+});
+
+router.post('/:id/remove', utils.isLoggedIn, function(req, res) {
+
+});
+
+router.post('/:id/poll', utils.isLoggedIn, function(req, res) {
+
 });
 
 router.get('/:id/data', utils.isLoggedIn, function(req, res) {

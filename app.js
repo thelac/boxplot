@@ -40,9 +40,20 @@ app.use(cookieParser());
 app.use('/public', express.static(process.cwd() + '/public'));
 
 // required for passport
+var pg = require('pg');
+var pgSession = require('connect-pg-simple')(require('connect'));
+
 app.use(session({
+  store: new pgSession({
+    pg: pg,
+    conString: process.env.SESSION_DATABASE_URL
+  }),
+  cookie: {
+    maxAge: 72 * 60 * 60 * 1000
+  }, 
   secret: process.env.PASSPORT_SESSION_SECRET
 })); // session secret
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
