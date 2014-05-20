@@ -32,7 +32,12 @@
     <div class="panel-heading"><b>Current users in this group</b></div>
     <ul class="list-group">
     {% for user in users %}
-      <li class="list-group-item">{{ user.email }}</li>
+      <li class="list-group-item">
+        {{ user.email }}
+        {% if isCreator and creator != user.id %}
+          <a href="/group/{{ group.id }}/remove/{{ user.id }}" class="pull-right">Remove</a>
+        {% endif %}
+      </li>
     {% endfor %}
     <ul>
   </div>
