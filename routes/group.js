@@ -1,6 +1,7 @@
 var Group = require('../models/group');
 var User = require('../models/user');
 var express = require('express');
+var async = require('async');
 var router = express.Router();
 
 router.get('/new', function(req, res) {
@@ -22,14 +23,64 @@ router.post('/new', function(req, res) {
   });
 });
 
+router.post('/:id/add', function(req, res) {
+  global.db.Group.find(req.params.id)
+    .success(function(group) {
+      global.db.User.find({
+        where: {
+          email: req.body.email
+        }
+      }).success(function(user) {
+        if (user) {
+          group.addUser(user).success(function() {
+            console.log('Successfully added!');
+            res.redirect('/group/' + req.params.id);
+          })
+        }
+      })
+    })
+});
+
+router.get('/:id/data', function(req, res) {
+  // TODO: this should be cleaned up massively
+  // Should probably do straight up SQL query
+  // Logic should also go elsewhere
+  var results = [];
+
+  global.db.Group.find(req.params.id).success(function(group) {
+    group.getUsers().success(function(users) {
+      async.each(users, function(user, userCallback) {
+        user.getData().success(function(data) {
+          async.each(data, function(datum, datumCallback) {
+            results.push({
+              time: datum.createdAt,
+              count: datum.count,
+              id: user.email
+            });
+            datumCallback();
+          }, function(err) {
+            userCallback();
+          })
+        })
+      }, function(err) {
+        console.log('done!')
+        res.json(results);
+      });
+    });
+  });
+});
+
 router.get('/:id', function(req, res) {
   global.db.Group.find(req.params.id)
     .success(function(group) {
-      if(group && group.hasUser(req.user)) {
-        res.render('group/show.html', {
-          title: 'Group ' + group.name,
-          group: group
-        });
+      if (group && group.hasUser(req.user)) {
+        group.getUsers().success(function(users) {
+          res.render('group/show.html', {
+            title: 'Group ' + group.name,
+            group: group,
+            users: users
+          });
+        })
       } else {
         res.render('error.html');
       };

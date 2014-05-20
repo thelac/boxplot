@@ -21,7 +21,9 @@
     "sequelize": "^1.7.5",
     "static-favicon": "~1.0.0",
     "xoauth2": "~0.1.8",
-    "imap": "~0.8.10"
+    "imap": "~0.8.10",
+    "activator": "~0.2.8",
+    "async": "~0.9.0"
   },
   "devDependencies": {
     "consolidate": "^0.10.0",

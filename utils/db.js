@@ -31,7 +31,8 @@ if (!global.hasOwnProperty('db')) {
   */
   // global.db.User.hasMany(global.db.Datum);
   global.db.Datum
-    .hasOne(global.db.User);
+    .hasOne(global.db.User)
+    .belongsTo(global.db.User);
 
   global.db.User.hasMany(global.db.Datum);
 

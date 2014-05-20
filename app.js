@@ -10,6 +10,9 @@ var nunjucks = require('nunjucks');
 var passport = require('passport');
 var flash = require('connect-flash');
 
+var activator = require('activator');
+var User = require('./models/user');
+
 var app = express();
 
 // Database ====================================================================
@@ -48,6 +51,11 @@ app.use('/user', users);
 app.use('/group', groups);
 
 app.listen(process.env.PORT || 8000);
+
+// TODO: this is incredibly bad practice
+process.on('uncaughtException', function (exception) {
+  console.log(exception);
+});
 
 // TODO: will set interval to poll gmail for data
 // setInterval(function() {

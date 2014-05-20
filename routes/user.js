@@ -4,6 +4,7 @@ var router = express.Router();
 router.get('/groups', function(req, res) {
   req.user.getGroups().success(function(groups) {
     res.render('user/groups.html', {
+      title: 'My Groups',
       groups: groups
     });
   });

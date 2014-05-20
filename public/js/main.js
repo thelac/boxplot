@@ -75,7 +75,7 @@ var line = d3.svg.line()
 /////////////////////////////////////
 // Creates the plot on the page, waiting to be populated with data (I think?)
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#dash").append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -85,7 +85,9 @@ var svg = d3.select("body").append("svg")
 /////////////////////////////////////
 // This makes the call to Firebase for the data, and plugs it into D3 to render as a graph
 
-d3.json("https://inboxr.firebaseio.com/inboxr.json", function(data) {
+var dir = window.location.href;
+dir = dir.substr(dir.length - 1) === '/' ? dir.substring(0, dir.length - 1) : dir;
+d3.json(dir + '/data', function(data) {
 
   var dataset = [];
 

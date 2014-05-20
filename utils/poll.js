@@ -4,9 +4,10 @@ require('./db');
 var configAuth = require('../config/auth');
 
 module.exports = function() {
+
+
   global.db.User.all().success(function(users) {
-    for (i in users) {
-      var user = users[i];
+    users.forEach(function(user) {
       var xoauth2 = require('xoauth2');
       var generator = xoauth2.createXOAuth2Generator({
         user: user.email,
@@ -38,6 +39,7 @@ module.exports = function() {
               .success(function(d) {
                 d.setUser(user);
                 console.log(d.count);
+                console.log(user.email)
               })
           });
         });
@@ -52,6 +54,6 @@ module.exports = function() {
 
         imap.connect();
       });
-    }
+    });
   });
 };
