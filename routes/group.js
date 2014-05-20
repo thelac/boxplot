@@ -46,14 +46,17 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
 });
 
 router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
-  isGroupCreator(req.params.gid, req.user.id, function(group, user) {
-    if (user !== null) {
-      group.removeUser(user).sucess(function() {
-        var msg = 'User ' + user.email + ' removed from group ' + group.name + '.';
-        console.log(msg);
-        req.flash('groupManageMessage', msg);
-        res.redirect('/group/' + req.params.gid);
-      });
+  isGroupCreator(req.params.gid, req.user.id, function(group, isCreator) {
+    if (isCreator) {
+      global.db.User.find(req.params.uid)
+        .success(function(user) {
+          group.removeUser(user).success(function() {
+            var msg = 'User ' + user.email + ' removed from group ' + group.name + '.';
+            console.log(msg);
+            req.flash('groupManageMessage', msg);
+            res.redirect('/group/' + req.params.gid);
+          });
+        })
     }
   });
 });
@@ -95,13 +98,13 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
     .success(function(group) {
       if (group && group.hasUser(req.user)) {
         group.getUsers().success(function(users) {
-          isGroupCreator(req.params.id, req.user.id, function(group, user) {
+          isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
             res.render('group/show.html', {
               title: group.name,
               group: group,
               users: users,
               creator: req.user.id,
-              isCreator: user !== null,
+              isCreator: isCreator,
               message: req.flash('groupManageMessage')
             });
           })
@@ -122,12 +125,9 @@ function isGroupCreator(gid, uid, callback) {
   global.db.Group.find(gid)
     .success(function(group) {
       if (group && group.creator === uid) {
-        global.db.User.find(uid)
-          .success(function(user) {
-            callback(group, user);
-          })
+        callback(group, true);
       } else {
-        callback(group, null);
+        callback(group, false);
       }
     })
 };
