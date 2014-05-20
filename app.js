@@ -60,9 +60,9 @@ process.on('uncaughtException', function (exception) {
 });
 
 // TODO: will set interval to poll gmail for data
-var pollingFrequency = 30 * 60 * 1000;
-// setInterval(function() {
+var pollingFrequency = 10 * 60 * 1000;
+setInterval(function() {
   require('./utils/poll')();
-// }, pollingFrequency);
+}, pollingFrequency);
 
 module.exports = app;

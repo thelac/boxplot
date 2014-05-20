@@ -9,7 +9,7 @@ module.exports = function() {
 
       var generator = xoauth2.createXOAuth2Generator({
         user: user.email,
-        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         refreshToken: user.refreshToken
       });
