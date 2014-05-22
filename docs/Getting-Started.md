@@ -23,17 +23,14 @@ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 # To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 
-# Create these 2 postgres databases with no user or pass
-createdb boxplot
-createdb boxplot_session
-
-At this point, read docs/Getting-Started-PGSQL.md
+# Create your local postgres databases by following docs/Getting-Started-PGSQL.md
 
 # Install heroku toolkit (optional; for deploy)
 brew tap phinze/cask
 brew install brew-cask
 brew cask install --appdir="/Applications" heroku-toolbelt
 
+# Get the current boxplot code from Github
 git clone thelac/inboxr
 cd inboxr
 
