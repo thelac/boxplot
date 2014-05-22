@@ -3,14 +3,17 @@
 1. Go [here](https://console.developers.google.com)
 2. Create a new application
 3. Once signed in, go to APIs & auth -> Credentials
-4. Grab the OAuth details and enter into config/env.js
+4. Click on "Create New Client ID"
+    a. For "Javascript Origins" put 'http://127.0.0.1:8000/'
+    b. For "Authorized Redirect URI" put 'http://127.0.0.1:8000/auth/google/callback'
+4. Fill out config/env.js based on the new Client ID you just created...
 
 # Let's go over all the fields in config/env.js
 
 Here is a guide for where you find all the fields in your own config/env.js:
 
-* GOOGLE_CLIENT_ID: The "API & Auth" > "Credentials" page, called "Client ID"
-* GOOGLE_CLIENT_SECRET: From the JSON you can download in "API & Auth" > "Credentials", it's labeled "client_secret"
+* GOOGLE_CLIENT_ID: The "API & Auth" > "Credentials" page, the "Client ID" of the 'web application' you created above
+* GOOGLE_CLIENT_SECRET: Same as above; this is labeled 'client secret'
 * GOOGLE_CALLBACK_URL: Use what's in the example
 * PASSPORT_SESSION_SECRET: (Don't know...)
 * NODE_ENV: Keep as "dev"
