@@ -49,7 +49,7 @@ app.use(session({
   }),
   cookie: {
     maxAge: 72 * 60 * 60 * 1000
-  }, 
+  },
   secret: process.env.PASSPORT_SESSION_SECRET
 })); // session secret
 
@@ -74,14 +74,14 @@ app.get('*', function(req, res) {
 app.listen(process.env.PORT || 8000);
 
 // TODO: this is incredibly bad practice
-process.on('uncaughtException', function (exception) {
+process.on('uncaughtException', function(exception) {
   console.log(exception);
 });
 
 // TODO: will set interval to poll gmail for data
 var pollingFrequency = 10 * 60 * 1000;
 setInterval(function() {
-  require('./utils/poll')();
+  require('./utils/poll').pollAll();
 }, pollingFrequency);
 
 module.exports = app;

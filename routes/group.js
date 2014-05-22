@@ -61,8 +61,12 @@ router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
   });
 });
 
-router.post('/:id/poll', utils.isLoggedIn, function(req, res) {
-
+router.get('/:id/poll', utils.isLoggedIn, function(req, res) {
+  // TODO: should add check to see if user is in group
+  // TODO: should set rate limits here or something...
+  require('../utils/poll').pollGroup(req.params.id);
+  req.flash('groupManageMessage', 'Group data polled!');
+  res.redirect('/group/' + req.params.id);
 });
 
 router.get('/:id/data', utils.isLoggedIn, function(req, res) {
