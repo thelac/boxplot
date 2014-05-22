@@ -1,6 +1,4 @@
 var gulp = require('gulp');
-var git = require('gulp-git');
-var watch = require('gulp-watch');
 var nodemon = require('gulp-nodemon');
 
 gulp.task('watch', function() {
