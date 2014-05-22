@@ -1,5 +1,4 @@
 // load all the things we need
-var LocalStrategy = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
@@ -53,7 +52,7 @@ module.exports = function(passport) {
               return done(null, user);
             } else {
               User.create({
-                email: profile.emails[0].value, // get first email address
+                email: profile.emails[0].value.toLowerCase(), // get first email address
                 profileID: profile.id,
                 token: token,
                 refreshToken: refreshToken,
