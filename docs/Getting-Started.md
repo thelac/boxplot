@@ -23,14 +23,14 @@ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 # To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 
-# Create postgres db with no user or pass
-createdb boxplot
+# Create your local postgres databases by following docs/Getting-Started-PGSQL.md
 
 # Install heroku toolkit (optional; for deploy)
 brew tap phinze/cask
 brew install brew-cask
 brew cask install --appdir="/Applications" heroku-toolbelt
 
+# Get the current boxplot code from Github
 git clone thelac/inboxr
 cd inboxr
 
@@ -38,14 +38,18 @@ cd inboxr
 npm install gulp
 npm install
 
-# Set up config/env.json by copying file and filling out
-# See docs/Getting-Started-Google-Developers-Console.md
+# Set up your local configuration file by copying the example given
 cp config/env.json.example env.json
+
+# See docs/Getting-Started-Google-Developers-Console.md and follow those instructions
+
+# Fill out your new env.json file by following docs/Getting-Started-env-js.md
 
 # Start the server
 gulp
 
 # To check if things are working, point your browser to localhost:8000
+
 ```
 
 ## Getting up to speed
