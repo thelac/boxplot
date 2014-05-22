@@ -9,5 +9,3 @@ See the docs folder.
 - Gandi.net
 - Heroku
 - Heroku psql
-
-Test
