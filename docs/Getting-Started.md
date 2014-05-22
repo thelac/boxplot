@@ -27,6 +27,8 @@ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 createdb boxplot
 createdb boxplot_session
 
+At this point, read docs/Getting-Started-PGSQL.md
+
 # Install heroku toolkit (optional; for deploy)
 brew tap phinze/cask
 brew install brew-cask
@@ -44,18 +46,14 @@ cp config/env.json.example env.json
 
 # See docs/Getting-Started-Google-Developers-Console.md and follow those instructions
 
+# Fill out your new env.json file by following docs/Getting-Started-env-js.md
+
 # Start the server
 gulp
 
 # To check if things are working, point your browser to localhost:8000
 
 ```
-
-## postgresql GUI
-
-Boxplot uses postgresql (psql), which is a type of relational database. You can access and manipulate your database from the command line by doing `psql boxplot`, but this is clunky and requires you to learn the commands.
-
-Alternatively, you can download software to help you interact with psql better. I'm currently trying out [Valentina](http://www.valentina-db.com/en/valentina-studio-overview). If you're going with that, you connect to your local db by doing "Add Bookmark" in the "Servers" section of the start screen, selecting the PostgreSQL type, and then changing "User" to whatever you found in the Google Developers Console env.js step from the above instructions.
 
 ## Getting up to speed
 - [Express.js](http://expressjs.com/guide.html); Node in Action is the official node-express book
