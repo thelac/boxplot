@@ -23,8 +23,9 @@ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 # To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 
-# Create postgres db with no user or pass
+# Create these 2 postgres databases with no user or pass
 createdb boxplot
+createdb boxplot_session
 
 # Install heroku toolkit (optional; for deploy)
 brew tap phinze/cask
@@ -38,9 +39,10 @@ cd inboxr
 npm install gulp
 npm install
 
-# Set up config/env.json by copying file and filling out
-# See docs/Getting-Started-Google-Developers-Console.md
+# Set up your local configuration file by copying the example given
 cp config/env.json.example env.json
+
+# See docs/Getting-Started-Google-Developers-Console.md and follow those instructions
 
 # Start the server
 gulp
