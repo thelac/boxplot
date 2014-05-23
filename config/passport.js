@@ -52,7 +52,7 @@ module.exports = function(passport) {
               return done(null, user);
             } else {
               User.create({
-                email: profile.emails[0].value, // get first email address
+                email: profile.emails[0].value.toLowerCase(), // get first email address
                 profileID: profile.id,
                 token: token,
                 refreshToken: refreshToken,

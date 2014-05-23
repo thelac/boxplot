@@ -29,7 +29,7 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
     .success(function(group) {
       global.db.User.find({
         where: {
-          email: req.body.email
+          email: req.body.email.toLowerCase()
         }
       }).success(function(user) {
         if (user) {

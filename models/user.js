@@ -26,7 +26,7 @@ User.define = function(sequelize, DataTypes) {
 
 User.new = function(data, callback, error) {
   User.create({
-    email: data.email,
+    email: data.email.toLowerCase(),
     profileID: data.profileID,
     token: data.token,
     refreshToken: data.refreshToken,
