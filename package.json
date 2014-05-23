@@ -6,7 +6,6 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bcrypt": "^0.7.8",
     "body-parser": "~1.0.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.0.1",
@@ -16,7 +15,6 @@
     "nunjucks": "^1.0.5",
     "passport": "^0.2.0",
     "passport-google-oauth": "^0.1.5",
-    "passport-local": "^1.0.0",
     "pg": "^3.1.0",
     "sequelize": "^1.7.5",
     "static-favicon": "~1.0.0",
@@ -31,12 +29,9 @@
     "connect": "~2.16.2"
   },
   "devDependencies": {
-    "consolidate": "^0.10.0",
     "debug": "^0.8.1",
     "gulp": "^3.6.2",
     "gulp-git": "^0.4.2",
-    "gulp-livereload": "^1.5.0",
     "gulp-nodemon": "^1.0.2",
-    "gulp-watch": "~0.6.4"
   }
 }
