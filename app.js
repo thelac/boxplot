@@ -12,8 +12,6 @@ var nunjucks = require('nunjucks');
 var passport = require('passport');
 var flash = require('connect-flash');
 
-var activator = require('activator');
-
 var app = express();
 
 // Database ====================================================================
