@@ -123,6 +123,35 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
     })
 })
 
+router.delete('/:id', utils.isLoggedIn, function(req, res, next) {
+  var gid = req.params.id;
+  global.db.Group.find(gid)
+    .success(function(group) {
+      var uid = req.user.id;
+      if (group) {
+        isGroupCreator(gid, uid, function(group, isCreator) {
+          if (isCreator) {
+            group.destroy()
+              .success(function() {
+                return res.status(200).send('Group Deleted Successfully');
+              })
+              .error(function(error) {
+                return next(error);
+              });
+          } else {
+            return next('Not Authorized to delete that group');
+          }
+        });
+      } else {
+        return next('Group with id ' + req.params.id + ' not found');
+      }
+    })
+    .error(function(error) {
+      // Calling `next` sends this to the next route, which is usually the error handler
+      return next(error);
+    });
+});
+
 function isGroupCreator(gid, uid, callback) {
   // TODO: should really replace these two queries with one on the
   // join table
