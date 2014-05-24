@@ -101,8 +101,8 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
   global.db.Group.find(req.params.id)
     .success(function(group) {
       if (group) {
-        group.hasUser(req.user).success(function(hasUserResult){
-          if (hasUserResult) {
+        isMemberOf(group.id, req.user, function(group, isMember) {
+          if (isMember) {
             group.getUsers().success(function(users) {
               isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
                 res.render('group/show.html', {
@@ -131,11 +131,11 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
     });
 });
 
-function isMemberOf(gid, uid, callback) {
+function isMemberOf(gid, user, callback) {
   global.db.Group.find(gid)
     .success(function(group) {
       if (group) {
-        group.hasUser(uid).success(function(hasUserResult) {
+        group.hasUser(user).success(function(hasUserResult) {
           if (hasUserResult) {
             callback(group, true);
           } else {
