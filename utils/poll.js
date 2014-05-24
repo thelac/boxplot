@@ -1,4 +1,4 @@
-require('./db');
+require(APP_ROOT + '/config/db');
 var Imap = require('imap');
 var async = require('async');
 var xoauth2 = require('xoauth2');

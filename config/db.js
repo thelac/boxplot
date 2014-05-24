@@ -1,6 +1,6 @@
-var User = require('../models/user');
-var Datum = require('../models/datum');
-var Group = require('../models/group');
+var User = require(APP_ROOT + '/models/user');
+var Datum = require(APP_ROOT + '/models/datum');
+var Group = require(APP_ROOT + '/models/group');
 
 if (!global.hasOwnProperty('db')) {
   var Sequelize = require('sequelize'),
@@ -30,5 +30,5 @@ if (!global.hasOwnProperty('db')) {
   global.db.User.hasMany(global.db.Group);
   global.db.Group.hasMany(global.db.User);
 
-  require('./sync_db')(false);
+  require(APP_ROOT + '/scripts/sync_db')(false);
 }

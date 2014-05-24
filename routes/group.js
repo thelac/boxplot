@@ -1,7 +1,7 @@
-var Group = require('../models/group');
-var User = require('../models/user');
+var Group = require(APP_ROOT + '/models/group');
+var User = require(APP_ROOT + '/models/user');
 var express = require('express');
-var utils = require('../utils/utils');
+var utils = require(APP_ROOT + '/utils/utils');
 var async = require('async');
 var router = express.Router();
 
@@ -64,7 +64,7 @@ router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
 router.get('/:id/poll', utils.isLoggedIn, function(req, res) {
   // TODO: should add check to see if user is in group
   // TODO: should set rate limits here or something...
-  require('../utils/poll').pollGroup(req.params.id);
+  require(APP_ROOT + '/utils/poll').pollGroup(req.params.id);
   req.flash('groupManageMessage', 'Group data polled!');
   res.redirect('/group/' + req.params.id);
 });
