@@ -32,4 +32,11 @@ path {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
+  clip-path: url(#clip);
+}
+
+.brush .extent {
+  stroke: darkgrey;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
 }
