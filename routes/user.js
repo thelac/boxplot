@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var utils = require('../utils/utils');
+var utils = require(APP_ROOT + '/utils/utils');
 
 router.get('/', utils.isLoggedIn, function(req, res) {
   req.user.getGroups().success(function(groups) {
