@@ -25,8 +25,8 @@ router.post('/new', utils.isLoggedIn, function(req, res) {
 });
 
 router.post('/:id/add', utils.isLoggedIn, function(req, res) {
-  global.db.Group.find(req.params.id)
-    .success(function(group) {
+  isMemberOf(req.params.id, req.user.id, function(group, user, isMember) {
+    if (isMember && group) {
       global.db.User.find({
         where: {
           email: req.body.email
@@ -49,10 +49,12 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
         .error(function(error) {
           res.render('error.html');
         });
-    })
-    .error(function(error) {
-      res.render('error.html');
-    });
+    } else {
+      res.render('denied.html', {
+        auth: req.isAuthenticated()
+      });
+    }
+  });
 });
 
 router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
