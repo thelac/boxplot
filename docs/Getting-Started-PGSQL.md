@@ -1,5 +1,14 @@
 # Getting started with postgresql
 
+```
+# Start postgres, start on boot
+initdb /usr/local/var/postgres
+cp /usr/local/Cellar/postgresql/[POSTGRES VERSION]/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+# To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
+```
+
 1. Read [this](https://devcenter.heroku.com/articles/heroku-postgresql)
 2. Set up your own database for app data. (You may have already done this in Getting-Started.md)
 ```

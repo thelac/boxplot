@@ -1,11 +1,12 @@
 # Getting started
 
+1. Do some initial installations
+
 ```
 # Install homebrew
 ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 
 # Install the basics
-brew install wget
 brew install git
 brew install hub
 brew install node
@@ -16,20 +17,6 @@ npm install -g gh
 # Install postgres
 brew install postgres
 
-# Start postgres, start on boot
-initdb /usr/local/var/postgres
-cp /usr/local/Cellar/postgresql/[POSTGRES VERSION]/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
-launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
-pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-# To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
-
-# Create your local postgres databases by following docs/Getting-Started-PGSQL.md
-
-# Install heroku toolkit (optional; for deploy)
-brew tap phinze/cask
-brew install brew-cask
-brew cask install --appdir="/Applications" heroku-toolbelt
-
 # Get the current boxplot code from Github
 git clone thelac/inboxr
 cd inboxr
@@ -37,19 +24,20 @@ cd inboxr
 # Install inboxr-specific stuff
 npm install gulp
 npm install
+```
 
-# Set up your local configuration file by copying the example given
-cp config/env.js.example config/env.js
+2. Fill out your new env.json file by following docs/Getting-Started-env-js.md
+3. Create your local postgres databases by following docs/Getting-Started-PGSQL.md
+4. Set up mailgun api by following docs/Getting-Started-Mailgun.md
+5. See docs/Getting-Started-Google-Developers-Console.md and follow those instructions
+6. (Optional) Get set up on Heroku using docs/Getting-Started-Heroku.md
 
-# See docs/Getting-Started-Google-Developers-Console.md and follow those instructions
 
-# Fill out your new env.json file by following docs/Getting-Started-env-js.md
-
+```
 # Start the server
 gulp
 
 # To check if things are working, point your browser to localhost:8000
-
 ```
 
 ## Getting up to speed
