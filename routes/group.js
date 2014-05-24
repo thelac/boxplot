@@ -98,54 +98,51 @@ router.get('/:id/data', utils.isLoggedIn, function(req, res) {
 });
 
 router.get('/:id', utils.isLoggedIn, function(req, res) {
-  global.db.Group.find(req.params.id)
-    .success(function(group) {
-      if (group) {
-        isMemberOf(group.id, req.user, function(group, isMember) {
-          if (isMember) {
-            group.getUsers().success(function(users) {
-              isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
-                res.render('group/show.html', {
-                  title: group.name,
-                  group: group,
-                  users: users,
-                  creator: req.user.id,
-                  isCreator: isCreator,
-                  message: req.flash('groupManageMessage')
-                });
-              });
-            });
-          } else {
-            res.render('denied.html', {
-              auth: req.isAuthenticated()
-            });
-          }
+  isMemberOf(req.params.id, req.user.id, function(group, user, isMember) {
+    if (isMember && group) {
+      group.getUsers().success(function(users) {
+        isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
+          res.render('group/show.html', {
+            title: group.name,
+            group: group,
+            users: users,
+            creator: req.user.id,
+            isCreator: isCreator,
+            message: req.flash('groupManageMessage')
+          });
         });
-      } else {
-        res.render('error.html');
-      }
-    })
-    .error(function(error) {
-      console.log('Group id ' + req.params.id + ' not found.');
-      res.render('error.html');
-    });
+      });
+    } else {
+      res.render('denied.html', {
+        auth: req.isAuthenticated()
+      });
+    }
+  });
 });
 
-function isMemberOf(gid, user, callback) {
+function isMemberOf(gid, uid, callback) {
   global.db.Group.find(gid)
     .success(function(group) {
       if (group) {
-        group.hasUser(user).success(function(hasUserResult) {
-          if (hasUserResult) {
-            callback(group, true);
-          } else {
-            callback(group, false);
-          }
-        });
+        global.db.User.find(uid)
+          .success(function(user) {
+            if (user) {
+              group.hasUser(user)
+                .success(function(hasUserResult) {
+                  if (hasUserResult) {
+                    callback(group, user, true);
+                  } else {
+                    callback(group, user, false);
+                  }
+                });
+            } else {
+              callback(group, null, false);
+            }
+          });
       } else {
         // Should the response be different if the group doesn't exist?
         // I'm mimicking isGroupCreator for now
-        callback(group, false);
+        callback(group, null, false);
       }
     });
 }
