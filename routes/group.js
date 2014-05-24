@@ -100,18 +100,22 @@ router.get('/:id/data', utils.isLoggedIn, function(req, res) {
 router.get('/:id', utils.isLoggedIn, function(req, res) {
   isMemberOf(req.params.id, req.user.id, function(group, user, isMember) {
     if (isMember && group) {
-      group.getUsers().success(function(users) {
-        isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
-          res.render('group/show.html', {
-            title: group.name,
-            group: group,
-            users: users,
-            creator: req.user.id,
-            isCreator: isCreator,
-            message: req.flash('groupManageMessage')
+      group.getUsers()
+        .success(function(users) {
+          isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
+            res.render('group/show.html', {
+              title: group.name,
+              group: group,
+              users: users,
+              creator: req.user.id,
+              isCreator: isCreator,
+              message: req.flash('groupManageMessage')
+            });
           });
+        })
+        .error(function(users) {
+          res.render('error.html');
         });
-      });
     } else {
       res.render('denied.html', {
         auth: req.isAuthenticated()
