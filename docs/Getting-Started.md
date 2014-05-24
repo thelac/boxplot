@@ -22,7 +22,7 @@ git clone thelac/boxplot
 cd boxplot
 
 # Install boxplot-specific stuff
-npm install gulp
+npm install -g gulp
 npm install
 ```
 
