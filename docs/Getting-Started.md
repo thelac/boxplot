@@ -18,10 +18,10 @@ npm install -g gh
 brew install postgres
 
 # Get the current boxplot code from Github
-git clone thelac/inboxr
-cd inboxr
+git clone thelac/boxplot
+cd boxplot
 
-# Install inboxr-specific stuff
+# Install boxplot-specific stuff
 npm install gulp
 npm install
 ```
@@ -31,10 +31,9 @@ npm install
 4. Set up mailgun api by following docs/Getting-Started-Mailgun.md
 5. See docs/Getting-Started-Google-Developers-Console.md and follow those instructions
 6. (Optional) Get set up on Heroku using docs/Getting-Started-Heroku.md
-
+7. Start the server
 
 ```
-# Start the server
 gulp
 
 # To check if things are working, point your browser to localhost:8000
