@@ -20,7 +20,7 @@ router.post('/new', utils.isLoggedIn, function(req, res) {
   }, function(user, error) { // Failure
     res.render('group/new.html', {
       message: req.flash('Group failed!')
-    })
+    });
   });
 });
 
@@ -31,18 +31,28 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
         where: {
           email: req.body.email
         }
-      }).success(function(user) {
-        if (user) {
-          group.addUser(user).success(function() {
-            console.log('User ' + user.email + 'successfully added to ' + group.name + '!');
-            res.redirect('/group/' + req.params.id);
-          })
-        } else {
-          req.flash('groupManageMessage', 'Unable to add :( Invite your friend to sign up!');
-          res.redirect('/group/' + req.params.id);
-        }
       })
+        .success(function(user) {
+          if (user) {
+            group.addUser(user).success(function() {
+              console.log('User ' + user.email + 'successfully added to ' + group.name + '!');
+              res.redirect('/group/' + req.params.id);
+            })
+            .error(function(error) {
+              res.render('error.html');
+            });
+          } else {
+            req.flash('groupManageMessage', 'Unable to add :( Invite your friend to sign up!');
+            res.redirect('/group/' + req.params.id);
+          }
+        })
+        .error(function(error) {
+          res.render('error.html');
+        });
     })
+    .error(function(error) {
+      res.render('error.html');
+    });
 });
 
 router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
@@ -57,6 +67,9 @@ router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
             res.redirect('/group/' + req.params.gid);
           });
         })
+        .error(function(error) {
+          res.render('error.html');
+        });
     }
   });
 });
@@ -113,7 +126,7 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
             });
           });
         })
-        .error(function(users) {
+        .error(function(error) {
           res.render('error.html');
         });
     } else {
@@ -142,6 +155,9 @@ function isMemberOf(gid, uid, callback) {
             } else {
               callback(group, null, false);
             }
+          })
+          .error(function(error){
+            callback(group, null, false);
           });
       } else {
         // Should the response be different if the group doesn't exist?
