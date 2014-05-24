@@ -39,7 +39,7 @@ npm install gulp
 npm install
 
 # Set up your local configuration file by copying the example given
-cp config/env.json.example env.json
+cp config/env.js.example config/env.js
 
 # See docs/Getting-Started-Google-Developers-Console.md and follow those instructions
 
