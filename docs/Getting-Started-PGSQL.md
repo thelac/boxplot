@@ -5,8 +5,12 @@
 initdb /usr/local/var/postgres
 cp /usr/local/Cellar/postgresql/[POSTGRES VERSION]/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+
+# Start postgresql server
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-# To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
+
+# Stop postgresql server
+To stop: pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 ```
 
 1. Read [this](https://devcenter.heroku.com/articles/heroku-postgresql)
@@ -18,6 +22,7 @@ NOTE: If you're following Getting-Started.md, DB_NAME is 'boxplot'
 
 3. Set up session database to persist sessions
 ```
+create [SESSION_DB_NAME]
 psql [SESSION_DB_NAME] < node_modules/connect-pg-simple/table.sql
 ```
 NOTE: If you're following Getting-Started.md, SESSION_DB_NAME is 'boxplot_session'
