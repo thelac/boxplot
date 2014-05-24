@@ -29,6 +29,9 @@
 
 7. Merge pull request
 
-8. Delete branch
+8. Delete remote and local branches
+```
+> git branch -d [USERNAME]/[FEATURE]
+```
 
 9. Checkout master and pull
