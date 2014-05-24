@@ -131,6 +131,25 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
     });
 });
 
+function isMemberOf(gid, uid, callback) {
+  global.db.Group.find(gid)
+    .success(function(group) {
+      if (group) {
+        group.hasUser(uid).success(function(hasUserResult) {
+          if (hasUserResult) {
+            callback(group, true);
+          } else {
+            callback(group, false);
+          }
+        });
+      } else {
+        // Should the response be different if the group doesn't exist?
+        // I'm mimicking isGroupCreator for now
+        callback(group, false);
+      }
+    });
+}
+
 function isGroupCreator(gid, uid, callback) {
   // TODO: should really replace these two queries with one on the
   // join table
