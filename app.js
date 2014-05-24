@@ -1,4 +1,4 @@
-require('./utils/process_env.js');
+require('./config');
 
 var express = require('express');
 var session = require('express-session')
@@ -15,10 +15,10 @@ var flash = require('connect-flash');
 var app = express();
 
 // Database ====================================================================
-require('./utils/db');
+require('./config/db');
 
 // Mailgun +====================================================================
-require('./utils/mailgun')
+require('./config/mailgun')
 
 // Authentication ==============================================================
 require('./config/passport')(passport);

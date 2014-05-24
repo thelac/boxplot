@@ -1,5 +1,5 @@
-require('./process_env');
-require('./db');
+require('../config');
+require(APP_ROOT + '/config/db');
 
 global.db.User.all().success(function(users) {
   users.forEach(function(user) {
