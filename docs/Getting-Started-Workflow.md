@@ -30,3 +30,5 @@
 7. Merge pull request
 
 8. Delete branch
+
+9. Checkout master and pull
