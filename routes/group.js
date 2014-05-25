@@ -25,7 +25,7 @@ router.post('/new', utils.isLoggedIn, function(req, res) {
 });
 
 router.post('/:id/add', utils.isLoggedIn, function(req, res) {
-  isMemberOf(req.params.id, req.user.id, function(group, user, isMember) {
+  isMemberOf(req.params.id, req.user.id, function(error, group, user, isMember) {
     if (isMember && group) {
       global.db.User.find({
         where: {
@@ -113,7 +113,7 @@ router.get('/:id/data', utils.isLoggedIn, function(req, res) {
 });
 
 router.get('/:id', utils.isLoggedIn, function(req, res) {
-  isMemberOf(req.params.id, req.user.id, function(group, user, isMember) {
+  isMemberOf(req.params.id, req.user.id, function(error, group, user, isMember) {
     if (isMember && group) {
       group.getUsers()
         .success(function(users) {
@@ -140,6 +140,7 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
 });
 
 function isMemberOf(gid, uid, callback) {
+  // Will return tuple of (error, group, user, isMember)
   global.db.Group.find(gid)
     .success(function(group) {
       if (group) {
@@ -149,22 +150,22 @@ function isMemberOf(gid, uid, callback) {
               group.hasUser(user)
                 .success(function(hasUserResult) {
                   if (hasUserResult) {
-                    callback(group, user, true);
+                    callback(null, group, user, true);
                   } else {
-                    callback(group, user, false);
+                    callback(null, group, user, false);
                   }
                 });
             } else {
-              callback(group, null, false);
+              callback(null, group, null, false);
             }
           })
           .error(function(error){
-            callback(group, null, false);
+            callback(null, null, null, false);
           });
       } else {
         // Should the response be different if the group doesn't exist?
         // I'm mimicking isGroupCreator for now
-        callback(group, null, false);
+        callback(error, null, null, false);
       }
     });
 }
