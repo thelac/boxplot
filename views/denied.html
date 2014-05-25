@@ -1,0 +1,17 @@
+{% extends "layout-auth.html" %}
+
+{% block content %}
+
+  <div class="jumbotron text-center">
+    <h1><span class="fa fa-lock"></span> {{ title }} </h1>
+
+    <p>Oops, you don't have access to that page!</p>
+
+    {% if auth %}
+      <a href="/" class="btn btn-default btn-sm"> Home</a>
+    {% else %}
+      <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Log In</a>
+    {% endif %}
+
+  </div>
+{% endblock %}
