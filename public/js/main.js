@@ -20,8 +20,11 @@
 /////////////////////////////////////
 // Setting some things up
 
+// Placeholder until user revealed in backend
 target = "kevin375493@gmail.com";
 
+// Current function for dynamically setting css based on user.
+// TODO: Change to class with settings done at CSS level.
 function target2(focus_type)
 {
   if (focus_type === target) {
@@ -183,7 +186,6 @@ d3.json(dir + '/data', function(data) {
       .attr("height", "1")
       .attr("width", 32);
 
-    console.log(i);
     svg.append("svg:text")
       .attr("x", 90)
       .attr("y", 45 + y_offset)
