@@ -140,7 +140,7 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
 });
 
 function isMemberOf(gid, uid, callback) {
-  // Will return tuple of (error, group, user, isMember)
+  // Will return (error, group, user, isMember)
   global.db.Group.find(gid)
     .success(function(group) {
       if (group) {
@@ -160,11 +160,12 @@ function isMemberOf(gid, uid, callback) {
             }
           })
           .error(function(error){
-            callback(null, null, null, false);
+            callback(error, null, null, false);
           });
       } else {
         // Should the response be different if the group doesn't exist?
         // I'm mimicking isGroupCreator for now
+        var error = "No group with that id";
         callback(error, null, null, false);
       }
     });
