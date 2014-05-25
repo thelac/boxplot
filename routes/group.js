@@ -12,16 +12,39 @@ router.get('/new', utils.isLoggedIn, function(req, res) {
 });
 
 router.post('/new', utils.isLoggedIn, function(req, res) {
-  User.createGroup({
-    user: req.user,
-    name: req.body.name
-  }, function(user, group) { // Success
-    res.redirect('/user');
-  }, function(user, error) { // Failure
-    res.render('group/new.html', {
-      message: req.flash('Group failed!')
+  var proposedName = req.body.name,
+      normProposedName = utils.normalizeName(proposedName),
+      conflictingName = false;
+
+  global.db.Group.findAll()
+    .success(function(allGroups) {
+      for (var ind = 0; ind < allGroups.length; ind++) {
+        var existingGroup = utils.normalizeName(allGroups[ind].name);
+        if (existingGroup === normProposedName) {
+          conflictingName = true;
+        }
+      }
+      if (conflictingName) {
+        res.render('error.html', {
+          errorMsg: "A group with that name already exists!",
+          auth: req.isAuthenticated()
+        });
+      } else {
+        User.createGroup({
+          user: req.user,
+          name: req.body.name
+        }, function(user, group) { // Success
+          res.redirect('/user');
+        }, function(user, error) { // Failure
+          res.render('group/new.html', {
+            message: req.flash('Group failed!')
+          });
+        });
+      }
+    })
+    .error(function(error) {
+      res.render('error.html');
     });
-  });
 });
 
 router.post('/:id/add', utils.isLoggedIn, function(req, res) {
