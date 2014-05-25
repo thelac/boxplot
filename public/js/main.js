@@ -78,6 +78,14 @@ var line = d3.svg.line()
     return y(d.count);
   });
 
+var line_context = d3.svg.line()
+  .interpolate("basis")
+  .x(function(d) {
+    return x_context(d.time);
+  })
+  .y(function(d) {
+    return y_context(d.count);
+  });
 
 // D3 / context-related
 var x_context = d3.time.scale()
@@ -212,7 +220,7 @@ d3.json(dir + '/data', function(data) {
     context.append("path")
       .datum(name_slice)
       .attr("class", "line")
-      .attr("d", line)
+      .attr("d", line_context)
 
     names_arr.push({
       "name": i,
