@@ -1,7 +1,7 @@
 var Group = require(APP_ROOT + '/models/group');
 var User = require(APP_ROOT + '/models/user');
 var express = require('express');
-var utils = require(APP_ROOT + '/utils/utils');
+utils = require(APP_ROOT + '/utils/utils');
 var async = require('async');
 var router = express.Router();
 
