@@ -31,5 +31,5 @@ if (!global.hasOwnProperty('db')) {
   global.db.Group.hasMany(global.db.User);
 
   // Below might not be necessary (might be dangerous) if using migrations
-  require(APP_ROOT + '/scripts/sync_db')(false);
+  // require(APP_ROOT + '/scripts/sync_db')(false);
 }
