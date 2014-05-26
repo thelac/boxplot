@@ -15,7 +15,7 @@ if (!global.hasOwnProperty('db')) {
 
   global.db.User = User.define(sequelize, Sequelize);
   global.db.Datum = Datum.define(sequelize, Sequelize);
-  global.db.Group = Group.define(sequelize, Sequelize)
+  global.db.Group = Group.define(sequelize, Sequelize);
   /*
     Associations can be defined here. E.g. like this:
     global.db.User.hasMany(global.db.SomethingElse)
@@ -30,5 +30,6 @@ if (!global.hasOwnProperty('db')) {
   global.db.User.hasMany(global.db.Group);
   global.db.Group.hasMany(global.db.User);
 
+  // Below might not be necessary (might be dangerous) if using migrations
   require(APP_ROOT + '/scripts/sync_db')(false);
 }
