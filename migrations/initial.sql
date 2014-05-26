@@ -1,30 +1,16 @@
 -- Created with `pg_dump -O -s -x boxplot | egrep -v "(^SET|^/\*\!)" > mypostgres`
+-- NOTE: If creating new initial.sql file, NEED TO REMOVE THE COMMENTS with semicolons
 
 --
 -- PostgreSQL database dump
 --
 
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
-
-
-
-
---
--- Name: Data; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
 
 CREATE TABLE "Data" (
     id integer NOT NULL,
@@ -35,10 +21,6 @@ CREATE TABLE "Data" (
 );
 
 
---
--- Name: Data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
 CREATE SEQUENCE "Data_id_seq"
     START WITH 1
     INCREMENT BY 1
@@ -47,16 +29,8 @@ CREATE SEQUENCE "Data_id_seq"
     CACHE 1;
 
 
---
--- Name: Data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
 ALTER SEQUENCE "Data_id_seq" OWNED BY "Data".id;
 
-
---
--- Name: Groups; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
 
 CREATE TABLE "Groups" (
     id integer NOT NULL,
@@ -67,10 +41,6 @@ CREATE TABLE "Groups" (
 );
 
 
---
--- Name: GroupsUsers; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
 CREATE TABLE "GroupsUsers" (
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
@@ -78,10 +48,6 @@ CREATE TABLE "GroupsUsers" (
     "UserId" integer NOT NULL
 );
 
-
---
--- Name: Groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
 
 CREATE SEQUENCE "Groups_id_seq"
     START WITH 1
@@ -91,16 +57,8 @@ CREATE SEQUENCE "Groups_id_seq"
     CACHE 1;
 
 
---
--- Name: Groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
 ALTER SEQUENCE "Groups_id_seq" OWNED BY "Groups".id;
 
-
---
--- Name: Users; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
 
 CREATE TABLE "Users" (
     id integer NOT NULL,
@@ -118,10 +76,6 @@ CREATE TABLE "Users" (
 );
 
 
---
--- Name: Users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
 CREATE SEQUENCE "Users_id_seq"
     START WITH 1
     INCREMENT BY 1
@@ -130,16 +84,8 @@ CREATE SEQUENCE "Users_id_seq"
     CACHE 1;
 
 
---
--- Name: Users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
 ALTER SEQUENCE "Users_id_seq" OWNED BY "Users".id;
 
-
---
--- Name: session; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
 
 CREATE TABLE session (
     sid character varying NOT NULL,
@@ -148,84 +94,38 @@ CREATE TABLE session (
 );
 
 
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY "Data" ALTER COLUMN id SET DEFAULT nextval('"Data_id_seq"'::regclass);
 
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
 
 ALTER TABLE ONLY "Groups" ALTER COLUMN id SET DEFAULT nextval('"Groups_id_seq"'::regclass);
 
 
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY "Users" ALTER COLUMN id SET DEFAULT nextval('"Users_id_seq"'::regclass);
 
-
---
--- Name: Data_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
 
 ALTER TABLE ONLY "Data"
     ADD CONSTRAINT "Data_pkey" PRIMARY KEY (id);
 
 
---
--- Name: GroupsUsers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
 ALTER TABLE ONLY "GroupsUsers"
     ADD CONSTRAINT "GroupsUsers_pkey" PRIMARY KEY ("GroupId", "UserId");
 
-
---
--- Name: Groups_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
 
 ALTER TABLE ONLY "Groups"
     ADD CONSTRAINT "Groups_name_key" UNIQUE (name);
 
 
---
--- Name: Groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
 ALTER TABLE ONLY "Groups"
     ADD CONSTRAINT "Groups_pkey" PRIMARY KEY (id);
 
-
---
--- Name: Users_email_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
 
 ALTER TABLE ONLY "Users"
     ADD CONSTRAINT "Users_email_key" UNIQUE (email);
 
 
---
--- Name: Users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
 ALTER TABLE ONLY "Users"
     ADD CONSTRAINT "Users_pkey" PRIMARY KEY (id);
 
 
---
--- Name: session_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
 ALTER TABLE ONLY session
     ADD CONSTRAINT session_pkey PRIMARY KEY (sid);
-
-
---
--- PostgreSQL database dump complete
---
-

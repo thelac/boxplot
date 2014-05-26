@@ -22,7 +22,6 @@ module.exports = {
         var tables = initialSchema.split(';');
 
         function createTable(tableSql, doneCreate){
-            console.log(tableSql);
           db.query(tableSql).complete(doneCreate);
         }
 
