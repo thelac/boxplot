@@ -20,29 +20,41 @@ router.post('/new', utils.isLoggedIn, function(req, res) {
   }, function(user, error) { // Failure
     res.render('group/new.html', {
       message: req.flash('Group failed!')
-    })
+    });
   });
 });
 
 router.post('/:id/add', utils.isLoggedIn, function(req, res) {
-  global.db.Group.find(req.params.id)
-    .success(function(group) {
+  isMemberOf(req.params.id, req.user.id, function(error, group, user, isMember) {
+    if (isMember && group) {
       global.db.User.find({
         where: {
           email: req.body.email.toLowerCase()
         }
-      }).success(function(user) {
-        if (user) {
-          group.addUser(user).success(function() {
-            console.log('User ' + user.email + 'successfully added to ' + group.name + '!');
-            res.redirect('/group/' + req.params.id);
-          })
-        } else {
-          req.flash('groupManageMessage', 'Unable to add :( Invite your friend to sign up!');
-          res.redirect('/group/' + req.params.id);
-        }
       })
-    })
+        .success(function(user) {
+          if (user) {
+            group.addUser(user).success(function() {
+              console.log('User ' + user.email + 'successfully added to ' + group.name + '!');
+              res.redirect('/group/' + req.params.id);
+            })
+            .error(function(error) {
+              res.render('error.html');
+            });
+          } else {
+            req.flash('groupManageMessage', 'Unable to add :( Invite your friend to sign up!');
+            res.redirect('/group/' + req.params.id);
+          }
+        })
+        .error(function(error) {
+          res.render('error.html');
+        });
+    } else {
+      res.render('denied.html', {
+        auth: req.isAuthenticated()
+      });
+    }
+  });
 });
 
 router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
@@ -57,6 +69,9 @@ router.get('/:gid/remove/:uid', utils.isLoggedIn, function(req, res) {
             res.redirect('/group/' + req.params.gid);
           });
         })
+        .error(function(error) {
+          res.render('error.html');
+        });
     }
   });
 });
@@ -98,10 +113,10 @@ router.get('/:id/data', utils.isLoggedIn, function(req, res) {
 });
 
 router.get('/:id', utils.isLoggedIn, function(req, res) {
-  global.db.Group.find(req.params.id)
-    .success(function(group) {
-      if (group && group.hasUser(req.user)) {
-        group.getUsers().success(function(users) {
+  isMemberOf(req.params.id, req.user.id, function(error, group, user, isMember) {
+    if (isMember && group) {
+      group.getUsers()
+        .success(function(users) {
           isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
             res.render('group/show.html', {
               title: group.name,
@@ -111,17 +126,50 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
               isCreator: isCreator,
               message: req.flash('groupManageMessage')
             });
-          })
+          });
         })
+        .error(function(error) {
+          res.render('error.html');
+        });
+    } else {
+      res.render('denied.html', {
+        auth: req.isAuthenticated()
+      });
+    }
+  });
+});
+
+function isMemberOf(gid, uid, callback) {
+  // Will return (error, group, user, isMember)
+  global.db.Group.find(gid)
+    .success(function(group) {
+      if (group) {
+        global.db.User.find(uid)
+          .success(function(user) {
+            if (user) {
+              group.hasUser(user)
+                .success(function(hasUserResult) {
+                  if (hasUserResult) {
+                    callback(null, group, user, true);
+                  } else {
+                    callback(null, group, user, false);
+                  }
+                });
+            } else {
+              callback(null, group, null, false);
+            }
+          })
+          .error(function(error){
+            callback(error, null, null, false);
+          });
       } else {
-        res.render('error.html');
-      };
-    })
-    .error(function(error) {
-      console.log('Group id ' + req.params.id + ' not found.');
-      res.render('error.html');
-    })
-})
+        // Should the response be different if the group doesn't exist?
+        // I'm mimicking isGroupCreator for now
+        var error = "No group with that id";
+        callback(error, null, null, false);
+      }
+    });
+}
 
 function isGroupCreator(gid, uid, callback) {
   // TODO: should really replace these two queries with one on the
@@ -133,7 +181,7 @@ function isGroupCreator(gid, uid, callback) {
       } else {
         callback(group, false);
       }
-    })
-};
+    });
+}
 
 module.exports = router;

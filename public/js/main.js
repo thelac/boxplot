@@ -152,9 +152,9 @@ d3.json(dir + '/data', function(data) {
     return d.time;
   }));
 
-  y.domain([0,d3.extent(dataset, function(d) {
+  y.domain([0,d3.max(dataset, function(d) {
     return d.count;
-  })[1]]);
+  })]);
 
   x_context.domain(x.domain());
 
