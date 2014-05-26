@@ -39,13 +39,20 @@ var colors = ["steelblue", "black", "red", "gold", "olivedrab", "powderblue", "o
   margin = {
     top: 20,
     right: 20,
-    bottom: 30,
+    bottom: 100,
     left: 30
   },
+  margin_context = {
+    top: 430,
+    right: 20,
+    bottom: 20,
+    left:30 
+  },
   width = w - margin.left - margin.right,
-  height = h - margin.top - margin.bottom;
+  height = h - margin.top - margin.bottom,
+  height_context = h - margin_context.top - margin_context.bottom;
 
-// D3 / Graph-related
+// D3 / Focus-related
 var x = d3.time.scale()
   .range([0, width]);
 
@@ -71,16 +78,56 @@ var line = d3.svg.line()
     return y(d.count);
   });
 
+var line_context = d3.svg.line()
+  .interpolate("basis")
+  .x(function(d) {
+    return x_context(d.time);
+  })
+  .y(function(d) {
+    return y_context(d.count);
+  });
+
+// D3 / context-related
+var x_context = d3.time.scale()
+  .range([0,width]);
+
+var y_context = d3.scale.linear()
+  .range([height_context, 0]);
+
+var xAxis_context = d3.svg.axis()
+  .scale(x_context)
+  .orient("bottom");
+
+var brush = d3.svg.brush()
+  .x(x_context)
+  .on("brush", brushed);
+
+function brushed() {
+  x.domain(brush.empty() ? x_context.domain() : brush.extent());
+  focus.select(".line").attr("d", line);
+  focus.select(".x.axis").call(xAxis);
+}
 
 /////////////////////////////////////
-// Creates the plot on the page, waiting to be populated with data (I think?)
+// Creates the plot on the page, waiting to be populated with data
 
 var svg = d3.select("#dash").append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+
+svg.append("defs").append("clipPath")
+  .attr("id", "clip")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("transform", "translate(0, " + -1 +")");
+
+var focus = svg.append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var context = svg.append("g")
+  .attr("class", "context")
+  .attr("transform", "translate(" + margin_context.left + "," + margin_context.top + ")");
 
 /////////////////////////////////////
 // This makes the call to Firebase for the data, and plugs it into D3 to render as a graph
@@ -89,6 +136,7 @@ var dir = window.location.href;
 dir = dir.substr(dir.length - 1) === '/' ? dir.substring(0, dir.length - 1) : dir;
 d3.json(dir + '/data', function(data) {
 
+  // handle data
   var dataset = [];
 
   for (var d in data) {
@@ -99,6 +147,7 @@ d3.json(dir + '/data', function(data) {
     });
   }
 
+  // normalize domains
   x.domain(d3.extent(dataset, function(d) {
     return d.time;
   }));
@@ -107,12 +156,28 @@ d3.json(dir + '/data', function(data) {
     return d.count;
   })]);
 
-  svg.append("g")
+  x_context.domain(x.domain());
+
+  y_context.domain(y.domain());
+
+  context.append("g")
+    .attr("class", "x brush")
+    .call(brush)
+    .selectAll("rect")
+      .attr("y", - 6)
+      .attr("height", height_context + 7);
+
+  context.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height_context + ")")
+    .call(xAxis_context)
+
+  focus.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
 
-  svg.append("g")
+  focus.append("g")
     .attr("class", "y axis")
     .call(yAxis)
     .append("text")
@@ -140,16 +205,22 @@ d3.json(dir + '/data', function(data) {
 
   names_arr = [];
 
+  // Draw lines
   for (var i in names_dict) {
     var name_slice = filt(dataset, i);
 
     names_dict[i].last = name_slice.slice(-1)[0].count;
 
-    svg.append("path")
+    focus.append("path")
       .datum(name_slice)
       .attr("class", "line")
       .attr("style", "stroke: " + names_dict[i].color)
       .attr("d", line);
+
+    context.append("path")
+      .datum(name_slice)
+      .attr("class", "line")
+      .attr("d", line_context)
 
     names_arr.push({
       "name": i,
@@ -161,24 +232,23 @@ d3.json(dir + '/data', function(data) {
     return a.last - b.last;
   });
 
+  // Draw legend
   for (var j in names_arr) {
     i = names_arr[j].name;
 
-    svg.append("svg:rect")
+    focus.append("svg:rect")
       .attr("x", 55)
       .attr("y", 40 + y_offset)
       .attr("style", "stroke: " + names_dict[i].color)
       .attr("height", "1")
       .attr("width", 32);
 
-
-    svg.append("svg:text")
+    focus.append("svg:text")
       .attr("x", 90)
       .attr("y", 45 + y_offset)
       .text(i);
 
-
-    svg.append("svg:text")
+    focus.append("svg:text")
       .attr("x", 20)
       .attr("y", 45 + y_offset)
       .text(names_dict[i].last);
@@ -186,11 +256,4 @@ d3.json(dir + '/data', function(data) {
     y_offset = y_offset + 18;
   }
 
-  // chart title
-
-  // svg.append("svg:text")
-  //     .attr("x", w/2-50)
-  //     .attr("y", 20)
-  //     .attr("id", "title")
-  //     .text("Inboxr");
 });
