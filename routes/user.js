@@ -17,39 +17,26 @@ router.get('/', utils.isLoggedIn, function(req, res) {
 
 router.post('/invite', utils.isLoggedIn, function(req, res, next){
   // do email validation
-  if (validator.isEmail(req.body.email)){
-
-    var smtpTransport = nodemailer.createTransport("SMTP", {
-      service: "Gmail",
-      auth: {
-        user:"darthsuo@gmail.com",
-        pass: "yngsMfw88"
-      }
-    });
-
-    var mailOptions = {
-      from: "hello <your@mom.com>",
+  if (validator.isEmail(req.body.email)) {
+    var data = {
+      from: "Boxplot <invite@boxplot.io>",
       to: req.body.email,
-      subject: "Join boxplot!",
-      text: "seriously, join!"
-    }
+      subject: "Join Boxplot!",
+      text: "do it boxplot.io"
+    };
 
-    smtpTransport.sendMail(mailOptions, function (error, response) {
-      if(error){
-        console.log(error);
-        res.send(500, "looks like something went wrong with email!");
+    global.mg.sendText("invite@boxplot.io", req.body.email, "Join Boxplot!", "Go to boxplot.io to sign up!", function (err) {
+      if (err) {
+        res.send(500, "looks like something went wrong!")
       }
-      else{
-        console.log("Invite sent to:" + req.body.email);
-        res.send("Invite sent!")
+      else {
+        res.send("invited")
       }
     });
-
-    smtpTransport.close()
   }
 
   else {
-    res.send("500", "invalid email!")
+    res.send(500, "invalid email!")
   }
 
 });
