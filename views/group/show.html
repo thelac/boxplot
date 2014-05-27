@@ -1,9 +1,10 @@
 {% extends "layout-auth.html" %}
 
 {% block auth %}
-<script src='http://d3js.org/d3.v3.min.js'></script>    
+<script src='http://d3js.org/d3.v3.min.js'></script>
     <div id='dash'>
       <script src='/public/js/main.js'></script>
+      <script src='/public/js/groupClientEvents.js'></script>
       <script>
         var dir = window.location.href;
         dir = dir.substr(dir.length - 1) === '/' ? dir.substring(0, dir.length - 1) : dir;
@@ -45,5 +46,10 @@
     {% endfor %}
     <ul>
   </div>
+  {% if isCreator %}
+  <div>
+    <button id="delete-group-btn" type="submit" class="btn btn-danger" group-id="{{ group.id }}">Delete This Group</button>
+  </div>
+  {% endif %}  
   
 {% endblock %}
