@@ -18,13 +18,19 @@
     <div class="alert alert-danger">{{ message }}</div>
   {% endif %}
 
-  <form action="/group/{{ group.id }}/add" method="post">
+
+  <div id="user-msg" class="alert alert-danger" style="display: none">
+    User not found!
+    <button class"btn btn-warning btn-lg" id="invite-user-btn" group-id="{{ group.id }}">Send invite</button>
+  </div>
+
+  <form name="add-user" action="/group/{{ group.id }}/add" method="post">
     <div class="form-group">
       <label>New user email</label>
-      <input type="text" class="form-control" name="email">
+      <input type="text" class="form-control" id="add-user-email" name="email">
     </div>
 
-    <button type="submit" class="btn btn-warning btn-lg">Add user</button>
+    <button type="submit" class="btn btn-warning btn-lg" id="add-user-btn" group-id="{{ group.id }}">Add user</button>
   </form>
   
   <hr>

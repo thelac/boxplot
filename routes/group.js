@@ -4,6 +4,7 @@ var express = require('express');
 var utils = require(APP_ROOT + '/utils/utils');
 var async = require('async');
 var router = express.Router();
+var nodemailer = require('nodemailer');
 
 router.get('/new', utils.isLoggedIn, function(req, res) {
   res.render('group/new.html', {
@@ -24,7 +25,7 @@ router.post('/new', utils.isLoggedIn, function(req, res) {
   });
 });
 
-router.post('/:id/add', utils.isLoggedIn, function(req, res) {
+router.post('/:id/add', utils.isLoggedIn, function(req, res, next) {
   isMemberOf(req.params.id, req.user.id, function(error, group, user, isMember) {
     if (isMember && group) {
       global.db.User.find({
@@ -35,15 +36,14 @@ router.post('/:id/add', utils.isLoggedIn, function(req, res) {
         .success(function(user) {
           if (user) {
             group.addUser(user).success(function() {
-              console.log('User ' + user.email + 'successfully added to ' + group.name + '!');
-              res.redirect('/group/' + req.params.id);
+              console.log('User ' + user.email + ' successfully added to ' + group.name + '!');
+              res.send('success');
             })
             .error(function(error) {
               res.render('error.html');
             });
           } else {
-            req.flash('groupManageMessage', 'Unable to add :( Invite your friend to sign up!');
-            res.redirect('/group/' + req.params.id);
+            res.send(500, 'Not a user!')
           }
         })
         .error(function(error) {
