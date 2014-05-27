@@ -25,7 +25,7 @@
 
 5. Create pull request on GitHub
 
-6. Send pull request for review and iterate / push
+6. Send pull request for review, assign a reviewer, and iterate / push
 
 7. Merge pull request
 
