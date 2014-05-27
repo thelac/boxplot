@@ -19,9 +19,7 @@
   {% endif %}
 
 
-  <div id="user-msg" class="alert alert-danger" style="display: none">
-    User not found!
-    <button class"btn btn-warning btn-lg" id="invite-user-btn" group-id="{{ group.id }}">Send invite</button>
+  <div id="user-msg" class="alert alert-dismissable" style="display: none"> 
   </div>
 
   <form name="add-user" action="/group/{{ group.id }}/add" method="post">

@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var utils = require(APP_ROOT + '/utils/utils');
 var validator = require('validator');
-var nodemailer = require('nodemailer');
 
 router.get('/', utils.isLoggedIn, function(req, res) {
   req.user.getGroups().success(function(groups) {
@@ -14,9 +13,11 @@ router.get('/', utils.isLoggedIn, function(req, res) {
   });
 });
 
+  // =====================================
+  // INVITE USER =========================
+  // =====================================
 
 router.post('/invite', utils.isLoggedIn, function(req, res, next){
-  // do email validation
   if (validator.isEmail(req.body.email)) {
     var data = {
       from: "Boxplot <invite@boxplot.io>",
