@@ -62,12 +62,28 @@ var groups = require('./routes/group');
 
 app.use('/user', users);
 app.use('/group', groups);
-app.get('*', function(req, res) {
-  res.render('error.html', {
-    auth: req.isAuthenticated()
-  });
+
+app.get('*', function(req, res, next) {
+  var err = new Error();
+  err.status = 404;
+  next(err);
 });
 
+// error middleware
+app.use(function(err, req, res, next){
+  if (err.status == 404){
+    res.status(404);
+    res.render('error.html', {
+      auth: req.isAuthenticated()
+    });
+  }
+  if (err.status == 500){
+    res.status(500);
+    res.render('error.html', {
+      auth: req.isAuthenticated()
+    });
+  }
+});
 
 app.listen(process.env.PORT || 8000);
 
