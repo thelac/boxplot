@@ -62,11 +62,6 @@ var groups = require('./routes/group');
 
 app.use('/user', users);
 app.use('/group', groups);
-app.get('*', function(req, res) {
-  res.render('error.html', {
-    auth: req.isAuthenticated()
-  });
-});
 
 app.get('*', function(req, res, next) {
   var err = new Error();
