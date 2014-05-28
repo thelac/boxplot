@@ -11,11 +11,14 @@ brew install git
 brew install hub
 brew install node
 
+# Optional aliases
 alias git=hub
 npm install -g gh
 
 # Install postgres
 brew install postgres
+npm install -g pg
+npm install -g sequelize
 
 # Get the current boxplot code from Github
 git clone thelac/boxplot

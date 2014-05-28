@@ -28,4 +28,5 @@ build/Release
 node_modules
 
 env.js
+config/config.json
 *.dump

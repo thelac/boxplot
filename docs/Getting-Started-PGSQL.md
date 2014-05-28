@@ -35,8 +35,8 @@ NOTE: If you're following Getting-Started.md, SESSION_DB_NAME is 'boxplot_sessio
 (You may see that Sequelize has some built-in tools that automatically sync your database. There are 2 problems with this. One is that it will not automatically sync column changes in existing tables. A second is that if you sync with force=True, it will wipe your data.)
 
 **To apply migrations to your database:**
-1. Go to config/config.json
-2. In the "development" section, change your username and password to reflect your own settings.
+1. Go to config/config.json.example and save as config/config.js
+2. In the "development" section of config/config.js, change your username and password to reflect your own settings.
 3. Run the following: `sequelize -m` This will run all existing migrations.
 
 
