@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var utils = require(APP_ROOT + '/utils/utils');
+var validator = require('validator');
 
 router.get('/', utils.isLoggedIn, function(req, res) {
   req.user.getGroups().success(function(groups) {
@@ -11,5 +12,35 @@ router.get('/', utils.isLoggedIn, function(req, res) {
     });
   });
 });
+
+  // =====================================
+  // INVITE USER =========================
+  // =====================================
+
+router.post('/invite', utils.isLoggedIn, function(req, res, next){
+  if (validator.isEmail(req.body.email)) {
+    var data = {
+      from: "Boxplot <invite@boxplot.io>",
+      to: req.body.email,
+      subject: "Join Boxplot!",
+      text: "do it boxplot.io"
+    };
+
+    global.mg.sendText("invite@boxplot.io", req.body.email, "Join Boxplot!", "Go to boxplot.io to sign up!", function (err) {
+      if (err) {
+        res.send(500, "looks like something went wrong!")
+      }
+      else {
+        res.send("invited")
+      }
+    });
+  }
+
+  else {
+    res.send(500, "invalid email!")
+  }
+
+});
+
 
 module.exports = router;
