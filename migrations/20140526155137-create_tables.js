@@ -11,14 +11,16 @@ module.exports = {
 
     async.waterfall([
 
-      function(cb) {
+      function(callback) {
         fs.readFile(__dirname + '/initial.sql', function(err, data) {
-          if (err) throw err;
-          cb(null, data.toString());
+          if (err) {
+            throw err;
+          }
+          callback(null, data.toString());
         });
       },
 
-      function(initialSchema, cb) {
+      function(initialSchema, callback) {
         // need to split on ';' to get the individual CREATE TABLE sql
         // as db.query can execute on query at a time
         var tables = initialSchema.split(';');
@@ -27,9 +29,15 @@ module.exports = {
           db.query(tableSql).complete(doneCreate);
         }
 
-        async.each(tables, createTable, cb);
+        async.each(tables, createTable, callback);
       }
-    ], done);
+    ], function(err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        done();
+      }
+    });
   },
 
   down: function(migration, DataTypes, done) {
@@ -40,8 +48,8 @@ module.exports = {
         return name.toLowerCase() !== 'sequelizemeta';
       });
 
-      function dropTable(tableName, cb) {
-        migration.dropTable(tableName).complete(cb);
+      function dropTable(tableName, callback) {
+        migration.dropTable(tableName).complete(callback);
       }
 
       async.each(tables, dropTable, done);
