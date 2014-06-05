@@ -7,10 +7,10 @@ gulp.task('watch', function() {
     ext: 'html css js'
   })
     .on('change', function() {
-      console.log('changed!')
+      console.log('changed!');
     })
     .on('restart', function() {
-      console.log('restarted!')
+      console.log('restarted!');
     });
 });
 
