@@ -9,3 +9,5 @@ See the docs folder.
 - Gandi.net
 - Heroku
 - Heroku psql
+
+[ ![Codeship Status for thelac/boxplot](https://www.codeship.io/projects/6ada11d0-dbbd-0131-d767-0e4b520412df/status)](https://www.codeship.io/projects/24470)
