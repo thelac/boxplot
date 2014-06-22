@@ -39,18 +39,18 @@ var colors = ["steelblue", "black", "red", "gold", "olivedrab", "powderblue", "o
   margin = {
     top: 20,
     right: 20,
-    bottom: 100,
+    bottom: 20,
     left: 30
   },
-  margin_context = {
-    top: 430,
-    right: 20,
-    bottom: 20,
-    left:30 
-  },
+  // margin_context = {
+  //   top: 430,
+  //   right: 20,
+  //   bottom: 20,
+  //   left:30 
+  // },
   width = w - margin.left - margin.right,
-  height = h - margin.top - margin.bottom,
-  height_context = h - margin_context.top - margin_context.bottom;
+  height = h - margin.top - margin.bottom;
+  // height_context = h - margin_context.top - margin_context.bottom;
 
 // D3 / Focus-related
 var x = d3.time.scale()
@@ -78,35 +78,35 @@ var line = d3.svg.line()
     return y(d.count);
   });
 
-var line_context = d3.svg.line()
-  .interpolate("basis")
-  .x(function(d) {
-    return x_context(d.time);
-  })
-  .y(function(d) {
-    return y_context(d.count);
-  });
+// var line_context = d3.svg.line()
+//   .interpolate("basis")
+//   .x(function(d) {
+//     return x_context(d.time);
+//   })
+//   .y(function(d) {
+//     return y_context(d.count);
+//   });
 
 // D3 / context-related
-var x_context = d3.time.scale()
-  .range([0,width]);
+// var x_context = d3.time.scale()
+//   .range([0,width]);
 
-var y_context = d3.scale.linear()
-  .range([height_context, 0]);
+// var y_context = d3.scale.linear()
+//   .range([height_context, 0]);
 
-var xAxis_context = d3.svg.axis()
-  .scale(x_context)
-  .orient("bottom");
+// var xAxis_context = d3.svg.axis()
+//   .scale(x_context)
+//   .orient("bottom");
 
-var brush = d3.svg.brush()
-  .x(x_context)
-  .on("brush", brushed);
+// var brush = d3.svg.brush()
+//   .x(x_context)
+//   .on("brush", brushed);
 
-function brushed() {
-  x.domain(brush.empty() ? x_context.domain() : brush.extent());
-  focus.select(".line").attr("d", line);
-  focus.select(".x.axis").call(xAxis);
-}
+// function brushed() {
+//   x.domain(brush.empty() ? x_context.domain() : brush.extent());
+//   focus.select(".line").attr("d", line);
+//   focus.select(".x.axis").call(xAxis);
+// }
 
 /////////////////////////////////////
 // Creates the plot on the page, waiting to be populated with data
@@ -125,9 +125,9 @@ svg.append("defs").append("clipPath")
 var focus = svg.append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var context = svg.append("g")
-  .attr("class", "context")
-  .attr("transform", "translate(" + margin_context.left + "," + margin_context.top + ")");
+// var context = svg.append("g")
+//   .attr("class", "context")
+//   .attr("transform", "translate(" + margin_context.left + "," + margin_context.top + ")");
 
 /////////////////////////////////////
 // This makes the call to Firebase for the data, and plugs it into D3 to render as a graph
@@ -156,21 +156,21 @@ d3.json(dir + '/data', function(data) {
     return d.count;
   })]);
 
-  x_context.domain(x.domain());
+  // x_context.domain(x.domain());
 
-  y_context.domain(y.domain());
+  // y_context.domain(y.domain());
 
-  context.append("g")
-    .attr("class", "x brush")
-    .call(brush)
-    .selectAll("rect")
-      .attr("y", - 6)
-      .attr("height", height_context + 7);
+  // context.append("g")
+  //   .attr("class", "x brush")
+  //   .call(brush)
+  //   .selectAll("rect")
+  //     .attr("y", - 6)
+  //     .attr("height", height_context + 7);
 
-  context.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height_context + ")")
-    .call(xAxis_context)
+  // context.append("g")
+  //   .attr("class", "x axis")
+  //   .attr("transform", "translate(0," + height_context + ")")
+  //   .call(xAxis_context)
 
   focus.append("g")
     .attr("class", "x axis")
@@ -217,10 +217,10 @@ d3.json(dir + '/data', function(data) {
       .attr("style", "stroke: " + names_dict[i].color)
       .attr("d", line);
 
-    context.append("path")
-      .datum(name_slice)
-      .attr("class", "line")
-      .attr("d", line_context)
+    // context.append("path")
+    //   .datum(name_slice)
+    //   .attr("class", "line")
+    //   .attr("d", line_context)
 
     names_arr.push({
       "name": i,
