@@ -133,34 +133,6 @@ router.get('/:id/:span/data/', utils.isLoggedIn, function(req, res) {
   });
 });
 
-router.get('/:id/:span/data/', utils.isLoggedIn, function(req, res) {
-  // TODO: this should be cleaned up massively
-  // Should probably do straight up SQL query
-  // Logic should also go elsewhere
-  var results = [];
-
-  global.db.Group.find(req.params.id).success(function(group) {
-    group.getUsers().success(function(users) {
-      async.each(users, function(user, userCallback) {
-        user.getData().success(function(data) {
-          async.each(data, function(datum, datumCallback) {
-            results.push({
-              time: datum.createdAt,
-              count: datum.count,
-              id: user.email
-            });
-            datumCallback();
-          }, function(err) {
-            userCallback();
-          })
-        })
-      }, function(err) {
-        res.json(results);
-      });
-    });
-  });
-});
-
 router.get('/:id', utils.isLoggedIn, function(req, res) {
   isMemberOf(req.params.id, req.user.id, function(error, group, user, isMember) {
     if (isMember && group) {
