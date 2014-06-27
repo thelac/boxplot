@@ -84,27 +84,48 @@ router.get('/:id/poll', utils.isLoggedIn, function(req, res) {
   res.redirect('/group/' + req.params.id);
 });
 
-router.get('/:id/data', utils.isLoggedIn, function(req, res) {
+router.get('/:id/:span/data/', utils.isLoggedIn, function(req, res) {
   // TODO: this should be cleaned up massively
   // Should probably do straight up SQL query
   // Logic should also go elsewhere
   var results = [];
 
+  var cutoff, samplingMultiplier;
+  switch (req.params.span) {
+    case 'day':
+      cutoff = new Date(
+          new Date().getTime() - (24 * 60 * 60 * 1000)
+        );
+      samplingMultiplier = 1;
+      break;
+    case 'week':
+      cutoff = new Date(
+          new Date().getTime() - (24 * 60 * 60 * 1000 * 7)
+        );
+      samplingMultiplier = 4;
+      break;
+  }
+
   global.db.Group.find(req.params.id).success(function(group) {
     group.getUsers().success(function(users) {
       async.each(users, function(user, userCallback) {
         user.getData().success(function(data) {
+          var dataIdx = 0;
           async.each(data, function(datum, datumCallback) {
-            results.push({
-              time: datum.createdAt,
-              count: datum.count,
-              id: user.email
-            });
+            if (dataIdx % samplingMultiplier === 0 &&
+              datum.createdAt > cutoff) {
+              results.push({
+                time: datum.createdAt,
+                count: datum.count,
+                id: user.email
+              });
+            }
+            dataIdx++;
             datumCallback();
           }, function(err) {
             userCallback();
-          })
-        })
+          });
+        });
       }, function(err) {
         res.json(results);
       });
@@ -118,7 +139,27 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
       group.getUsers()
         .success(function(users) {
           isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
-            res.render('group/show.html', {
+            res.redirect(req.params.id + '/day');
+          });
+        })
+        .error(function(error) {
+          res.render('error.html');
+        });
+    } else {
+      res.render('denied.html', {
+        auth: req.isAuthenticated()
+      });
+    }
+  });
+});
+
+router.get('/:id/:span', utils.isLoggedIn, function(req, res) {
+  isMemberOf(req.params.id, req.user.id, function(error, group, user, isMember) {
+    if (isMember && group) {
+      group.getUsers()
+        .success(function(users) {
+          isGroupCreator(req.params.id, req.user.id, function(group, isCreator) {
+            res.render('group/views/' + req.params.span + '.html', {
               title: group.name,
               group: group,
               users: users,
@@ -138,6 +179,7 @@ router.get('/:id', utils.isLoggedIn, function(req, res) {
     }
   });
 });
+
 
 function isMemberOf(gid, uid, callback) {
   // Will return (error, group, user, isMember)

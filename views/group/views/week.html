@@ -1,0 +1,12 @@
+{% extends "group/show.html"%}
+
+{% block dash %}
+  <div class="text-center">
+    <a href="/group/{{ group.id }}/day" class="btn btn-default btn-sm">Last 24 Hours</a>
+    <a href="/group/{{ group.id }}/week" class="btn btn-default btn-sm active">Last 7 days</a>
+  </div>
+  <div id='dash'>
+    <script src='/public/js/main.js'></script>
+    <script src='/public/js/groupClientEvents.js'></script>
+  </div>
+{% endblock %}

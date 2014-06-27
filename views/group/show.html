@@ -2,16 +2,8 @@
 
 {% block auth %}
 <script src='http://d3js.org/d3.v3.min.js'></script>
-    <div id='dash'>
-      <script src='/public/js/main.js'></script>
-      <script src='/public/js/groupClientEvents.js'></script>
-      <script>
-        var dir = window.location.href;
-        dir = dir.substr(dir.length - 1) === '/' ? dir.substring(0, dir.length - 1) : dir;
-        console.log(dir)
-      </script>
-    </div>
 
+  {% block dash %}{% endblock %}
   <hr>
 
   {% if message != '' %}
