@@ -6,7 +6,11 @@
     <h1><span class="fa fa-lock"></span> {{ title }} </h1>
 
     <p>Oops, that page isn't available!</p>
-    
+
+    {% if errorMsg %}
+        <p> Error: {{ errorMsg }}</p>
+    {% endif %}
+
     {% if auth %}
       <a href="/" class="btn btn-default btn-sm"> Home</a>
     {% else %}
